@@ -1,56 +1,67 @@
-# Welcome to your Expo app 👋
+# 🌱 Wordbloom
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**Grow your vocabulary, one bloom at a time.** Wordbloom is a mobile flashcard app for learning a foreign language by CEFR level — with tactile swipe cards and spaced repetition. Learn new words, review the ones you're about to forget, and watch your progress *bloom*.
 
-## Get started
+> **Status:** in active development. The frontend is being built first (on mock data) for visual approval — see the [Roadmap](#-roadmap).
 
-1. Install dependencies
+## ✨ What makes it different
 
-   ```bash
-   npm install
-   ```
+- **Level-based collections.** Each CEFR level (A1 → C2) is its own curated collection, sourced from official vocabulary lists. New words appear in random order, so you're never stuck grinding every word that starts with "a".
+- **Swipe to learn.** A card deck you flip to reveal the translation, part of speech, and an example sentence.
+- **Smart spaced repetition.** Words you know return on a growing schedule (minutes → hours → days → weeks). Miss a few days? Nothing is lost — overdue words simply wait for you.
+- **Your bloom.** A living blossom visualizes how much of a level you've mastered.
 
-2. Start the app
+## 🎯 MVP scope
 
-   ```bash
-   npx expo start
-   ```
+- Target languages: **English** and **German**; translations into **Russian**.
+- Card = headword · part of speech · translation · example sentence (audio & phonetics later).
+- Streaks, a daily goal, and progress stats with charts.
+- Dark & light themes.
 
-In the output, you'll find options to open the app in a
+## 🎨 Design
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+A "garnet / bloom" botanical identity built from a bold red + green palette:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+| Role | Colors |
+| --- | --- |
+| Bloom — deep surfaces & brand | garnet `#5C0000` · wine `#751717` · brick `#BA0C0C` |
+| Growth — accent & progress | fern `#27A300` · India green `#2A850E` · deep green `#005C00` |
+| Light tints | Lavender Blush `#FFEBEB` · Honeydew `#ECFFEB` |
 
-## Get a fresh project
+Type: **Fraunces** (editorial serif — headwords & headings) + **Manrope** (UI & Cyrillic translations).
 
-When you're ready, run:
+## 🛠 Tech stack
+
+- **Expo** (React Native) + **Expo Router** — file-based navigation
+- **TypeScript**
+- **Reanimated 4** + **Gesture Handler** — the swipe deck
+- **Zustand** (+ AsyncStorage) — state & persistence
+- **react-native-svg** — the bloom visual & charts
+- **expo-sqlite + Drizzle ORM** — local-first word data (backend phase)
+
+## 🚀 Getting started
 
 ```bash
-npm run reset-project
+npm install
+npx expo start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Open the project in **Expo Go** (scan the QR code) on your phone, or run it on a simulator.
 
-### Other setup steps
+## 🗺 Roadmap
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+**Frontend** (mock data first, for visual approval):
 
-## Learn more
+0. ✅ Project setup & design system
+1. Onboarding & auth
+2. Swipe flashcard deck
+3. Home dashboard
+4. Levels & collections
+5. Stats
+6. Settings
 
-To learn more about developing your project with Expo, look at the following resources:
+**Then:** local SQLite + SRS engine + real CEFR word lists → accounts & cloud sync.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## 📄 License
 
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+See [LICENSE](./LICENSE).
