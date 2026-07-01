@@ -60,3 +60,28 @@ export function getLevelStats(lang: LangCode, active: CEFRLevel): LevelStat[] {
     return { level, total, learned };
   });
 }
+
+export interface StatsData {
+  totalLearned: number;
+  streak: number;
+  accuracy: number;
+  week: { day: string; count: number }[];
+  trend: number[];
+  /** Intensity 0–3 per day, oldest first (5 weeks × 7 days). */
+  activity: number[];
+}
+
+export function getStats(lang: LangCode, level: CEFRLevel): StatsData {
+  const home = getHomeSummary(lang, level, 15);
+  return {
+    totalLearned: home.totalLearned,
+    streak: home.streak,
+    accuracy: 86,
+    week: home.week,
+    trend: [4, 9, 7, 14, 12, 18, 22, 28],
+    activity: [
+      0, 1, 2, 3, 2, 1, 0, 1, 2, 3, 3, 2, 0, 1, 2, 3, 1, 2,
+      3, 2, 1, 0, 2, 3, 3, 3, 2, 1, 1, 2, 3, 2, 1, 2, 3,
+    ],
+  };
+}
