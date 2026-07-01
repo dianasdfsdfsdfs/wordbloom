@@ -22,6 +22,7 @@ interface SettingsState {
   setThemeMode: (mode: ThemePreference) => void;
   cycleTheme: () => void;
   completeOnboarding: (choice: { targetLang: LangCode; level: CEFRLevel }) => void;
+  finishOnboarding: () => void;
   setTargetLang: (lang: LangCode) => void;
   setLevel: (level: CEFRLevel) => void;
   setDailyGoal: (goal: number) => void;
@@ -50,6 +51,7 @@ export const useSettings = create<SettingsState>()(
         set({ themeMode: next });
       },
       completeOnboarding: ({ targetLang, level }) => set({ hasOnboarded: true, targetLang, level }),
+      finishOnboarding: () => set({ hasOnboarded: true }),
       setTargetLang: (targetLang) => set({ targetLang }),
       setLevel: (level) => set({ level }),
       setDailyGoal: (dailyGoal) => set({ dailyGoal }),

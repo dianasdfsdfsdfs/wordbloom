@@ -24,13 +24,14 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { themes } from '@/constants/theme';
 import { useResolvedScheme } from '@/hooks/use-theme';
-import { useHydrated } from '@/stores/settings';
+import { useHydrated, useSettings } from '@/stores/settings';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const scheme = useResolvedScheme();
   const hydrated = useHydrated();
+  const hasOnboarded = useSettings((s) => s.hasOnboarded);
   const colors = themes[scheme];
 
   const [fontsLoaded] = useFonts({
@@ -73,8 +74,14 @@ export default function RootLayout() {
       <SafeAreaProvider>
         <ThemeProvider value={navTheme}>
           <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }}>
-            <Stack.Screen name="(tabs)" />
-            <Stack.Screen name="study" options={{ presentation: 'fullScreenModal', animation: 'fade' }} />
+            <Stack.Protected guard={hasOnboarded}>
+              <Stack.Screen name="(tabs)" />
+              <Stack.Screen name="study" options={{ presentation: 'fullScreenModal', animation: 'fade' }} />
+            </Stack.Protected>
+            <Stack.Protected guard={!hasOnboarded}>
+              <Stack.Screen name="(onboarding)" />
+              <Stack.Screen name="(auth)" />
+            </Stack.Protected>
           </Stack>
         </ThemeProvider>
       </SafeAreaProvider>
