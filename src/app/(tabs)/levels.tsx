@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { Screen } from '@/components/ui/screen';
+import { Surface } from '@/components/ui/surface';
 import { Text } from '@/components/ui/text';
 import { LANGUAGES, LEVEL_INFO, TARGET_LANGUAGES } from '@/constants/languages';
 import { radius, shadows, spacing } from '@/constants/theme';
@@ -65,38 +66,32 @@ export default function LevelsScreen() {
               <Pressable
                 key={st.level}
                 onPress={() => selectLevel(st.level)}
-                style={[
-                  styles.row,
-                  shadows.soft,
-                  {
-                    backgroundColor: colors.surface,
-                    borderColor: active ? colors.accent : colors.border,
-                    borderWidth: active ? 2 : 1,
-                  },
-                ]}>
-                <View style={[styles.badge, { backgroundColor: active ? colors.accent : colors.surfaceAlt }]}>
-                  <Text variant="titleL" style={{ color: active ? colors.textOnAccent : colors.textPrimary }}>
-                    {st.level}
-                  </Text>
-                </View>
-                <View style={{ flex: 1, gap: 6 }}>
-                  <View style={styles.titleRow}>
-                    <Text variant="titleM">{LEVEL_INFO[st.level].name}</Text>
-                    {active ? (
-                      <View style={[styles.chip, { backgroundColor: colors.accentSoft }]}>
-                        <Text variant="overline" color="accent">
-                          Active
-                        </Text>
-                      </View>
-                    ) : null}
+                style={({ pressed }) => ({ opacity: pressed ? 0.92 : 1 })}>
+                <Surface style={[styles.row, active ? { borderColor: colors.accent, borderWidth: 2 } : null]}>
+                  <View style={[styles.badge, { backgroundColor: active ? colors.accent : colors.surfaceAlt }]}>
+                    <Text variant="titleL" style={{ color: active ? colors.textOnAccent : colors.textPrimary }}>
+                      {st.level}
+                    </Text>
                   </View>
-                  <View style={[styles.track, { backgroundColor: colors.surfaceAlt }]}>
-                    <View style={[styles.fill, { width: `${pct * 100}%`, backgroundColor: colors.accent }]} />
+                  <View style={{ flex: 1, gap: 6 }}>
+                    <View style={styles.titleRow}>
+                      <Text variant="titleM">{LEVEL_INFO[st.level].name}</Text>
+                      {active ? (
+                        <View style={[styles.chip, { backgroundColor: colors.accentSoft }]}>
+                          <Text variant="overline" color="accent">
+                            Active
+                          </Text>
+                        </View>
+                      ) : null}
+                    </View>
+                    <View style={[styles.track, { backgroundColor: colors.surfaceAlt }]}>
+                      <View style={[styles.fill, { width: `${pct * 100}%`, backgroundColor: colors.accent }]} />
+                    </View>
+                    <Text variant="caption" color="textMuted">
+                      {st.learned} / {st.total} words
+                    </Text>
                   </View>
-                  <Text variant="caption" color="textMuted">
-                    {st.learned} / {st.total} words
-                  </Text>
-                </View>
+                </Surface>
               </Pressable>
             );
           })}
@@ -109,7 +104,7 @@ export default function LevelsScreen() {
 const styles = StyleSheet.create({
   segment: { flexDirection: 'row', padding: 4, borderRadius: radius.pill, gap: 4 },
   segmentBtn: { flex: 1, alignItems: 'center', paddingVertical: spacing.md, borderRadius: radius.pill },
-  row: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, padding: spacing.lg, borderRadius: radius.lg },
+  row: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, padding: spacing.lg },
   badge: { width: 54, height: 54, borderRadius: radius.md, alignItems: 'center', justifyContent: 'center' },
   titleRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   chip: { paddingHorizontal: spacing.sm, paddingVertical: 3, borderRadius: radius.pill },

@@ -170,15 +170,17 @@ export const typeScale = {
 
 const cardShadow =
   Platform.select({
-    ios: { shadowColor: '#2A0A0B', shadowOpacity: 0.1, shadowRadius: 18, shadowOffset: { width: 0, height: 10 } },
-    android: { elevation: 5 },
+    ios: { shadowColor: '#1A0405', shadowOpacity: 0.18, shadowRadius: 22, shadowOffset: { width: 0, height: 14 } },
+    android: { elevation: 9 },
+    web: { boxShadow: '0 14px 30px rgba(26,4,5,0.18)' },
     default: {},
   }) ?? {};
 
 const softShadow =
   Platform.select({
-    ios: { shadowColor: '#2A0A0B', shadowOpacity: 0.08, shadowRadius: 9, shadowOffset: { width: 0, height: 4 } },
-    android: { elevation: 3 },
+    ios: { shadowColor: '#1A0405', shadowOpacity: 0.14, shadowRadius: 14, shadowOffset: { width: 0, height: 7 } },
+    android: { elevation: 5 },
+    web: { boxShadow: '0 7px 18px rgba(26,4,5,0.14)' },
     default: {},
   }) ?? {};
 

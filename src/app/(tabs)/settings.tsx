@@ -5,6 +5,7 @@ import { Pressable, ScrollView, StyleSheet, Switch, View } from 'react-native';
 
 import { Button } from '@/components/ui/button';
 import { Screen } from '@/components/ui/screen';
+import { Surface } from '@/components/ui/surface';
 import { Text } from '@/components/ui/text';
 import { LANGUAGES, TARGET_LANGUAGES } from '@/constants/languages';
 import { palette, radius, shadows, spacing } from '@/constants/theme';
@@ -54,8 +55,6 @@ export default function SettingsScreen() {
     setDailyGoal(Math.max(GOAL_MIN, Math.min(GOAL_MAX, dailyGoal + delta)));
   };
 
-  const cardStyle = [styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, shadows.soft];
-
   return (
     <Screen>
       <ScrollView
@@ -65,7 +64,7 @@ export default function SettingsScreen() {
 
         <View>
           <SectionTitle>Appearance</SectionTitle>
-          <View style={cardStyle}>
+          <Surface style={styles.card}>
             <Text variant="bodyMed">Theme</Text>
             <View style={[styles.segment, { backgroundColor: colors.surfaceAlt }]}>
               {THEME_OPTIONS.map((o) => {
@@ -85,12 +84,12 @@ export default function SettingsScreen() {
                 );
               })}
             </View>
-          </View>
+          </Surface>
         </View>
 
         <View>
           <SectionTitle>Learning</SectionTitle>
-          <View style={[cardStyle, { gap: spacing.lg }]}>
+          <Surface style={[styles.card, { gap: spacing.lg }]}>
             <View style={{ gap: spacing.sm }}>
               <Text variant="bodyMed">Language</Text>
               <View style={[styles.segment, { backgroundColor: colors.surfaceAlt }]}>
@@ -159,12 +158,12 @@ export default function SettingsScreen() {
                 </Pressable>
               </View>
             </View>
-          </View>
+          </Surface>
         </View>
 
         <View>
           <SectionTitle>Notifications</SectionTitle>
-          <View style={[cardStyle, styles.rowBetween]}>
+          <Surface style={[styles.card, styles.rowBetween]}>
             <View style={{ flex: 1 }}>
               <Text variant="bodyMed">Study reminders</Text>
               <Text variant="caption" color="textMuted">
@@ -180,12 +179,12 @@ export default function SettingsScreen() {
               trackColor={{ true: colors.accent, false: colors.borderStrong }}
               thumbColor={palette.blush}
             />
-          </View>
+          </Surface>
         </View>
 
         <View>
           <SectionTitle>Account</SectionTitle>
-          <View style={[cardStyle, { gap: spacing.lg }]}>
+          <Surface style={[styles.card, { gap: spacing.lg }]}>
             <View style={styles.rowBetween}>
               <View style={[styles.avatar, { backgroundColor: colors.surfaceAlt }]}>
                 <Feather name="user" size={20} color={colors.textSecondary} />
@@ -206,7 +205,7 @@ export default function SettingsScreen() {
                 resetAll();
               }}
             />
-          </View>
+          </Surface>
         </View>
 
         <Text variant="caption" color="textMuted" center>
@@ -219,7 +218,7 @@ export default function SettingsScreen() {
 
 const styles = StyleSheet.create({
   sectionTitle: { marginBottom: spacing.sm, marginLeft: spacing.xs },
-  card: { gap: spacing.md, padding: spacing.lg, borderRadius: radius.lg, borderWidth: 1 },
+  card: { gap: spacing.md, padding: spacing.lg },
   segment: { flexDirection: 'row', padding: 4, borderRadius: radius.pill, gap: 4 },
   segmentBtn: { flex: 1, alignItems: 'center', paddingVertical: spacing.sm, borderRadius: radius.pill },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },

@@ -8,11 +8,13 @@ import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
 import { LANGUAGES, TARGET_LANGUAGES } from '@/constants/languages';
 import { spacing } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 import { useSettings } from '@/stores/settings';
 import type { LangCode } from '@/types/domain';
 
 export default function LanguagePick() {
   const router = useRouter();
+  const { colors } = useTheme();
   const setTargetLang = useSettings((s) => s.setTargetLang);
   const [selected, setSelected] = useState<LangCode | null>(null);
 
@@ -23,43 +25,37 @@ export default function LanguagePick() {
   };
 
   return (
-    <Screen edges={['top', 'bottom']} style={{ justifyContent: 'space-between' }}>
-      <View style={{ gap: spacing.xl }}>
-        <View style={{ gap: spacing.sm, marginTop: spacing.lg }}>
-          <Text variant="overline" color="accent">
-            Step 1 of 2
-          </Text>
-          <Text variant="displayM">What do you{'\n'}want to learn?</Text>
-          <Text variant="body" color="textSecondary">
-            Translations are shown in Russian.
-          </Text>
-        </View>
-
-        <View style={{ gap: spacing.md }}>
-          {TARGET_LANGUAGES.map((code) => (
-            <OptionCard
-              key={code}
-              title={LANGUAGES[code].name}
-              subtitle={LANGUAGES[code].endonym}
-              leading={
-                <Text variant="titleM" color="brand">
-                  {code.toUpperCase()}
-                </Text>
-              }
-              selected={selected === code}
-              onPress={() => setSelected(code)}
-            />
-          ))}
-        </View>
+    <Screen edges={['top', 'bottom']}>
+      <View style={{ gap: spacing.sm, paddingTop: spacing.md, paddingBottom: spacing.lg }}>
+        <Text variant="overline" color="accent">
+          Step 1 of 2
+        </Text>
+        <Text variant="displayM">What do you{'\n'}want to learn?</Text>
+        <Text variant="body" color="textSecondary">
+          Translations are shown in Russian.
+        </Text>
       </View>
 
-      <Button
-        label="Continue"
-        fullWidth
-        disabled={!selected}
-        onPress={onContinue}
-        style={{ marginBottom: spacing.md }}
-      />
+      <View style={{ flex: 1, gap: spacing.md }}>
+        {TARGET_LANGUAGES.map((code) => (
+          <OptionCard
+            key={code}
+            title={LANGUAGES[code].name}
+            subtitle={LANGUAGES[code].endonym}
+            leading={
+              <Text variant="titleM" color="brand">
+                {code.toUpperCase()}
+              </Text>
+            }
+            selected={selected === code}
+            onPress={() => setSelected(code)}
+          />
+        ))}
+      </View>
+
+      <View style={{ paddingTop: spacing.lg, borderTopWidth: 1, borderTopColor: colors.border }}>
+        <Button label="Continue" fullWidth disabled={!selected} onPress={onContinue} />
+      </View>
     </Screen>
   );
 }

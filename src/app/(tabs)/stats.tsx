@@ -3,8 +3,9 @@ import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
 
 import { AreaChart } from '@/components/charts/area-chart';
 import { Screen } from '@/components/ui/screen';
+import { Surface } from '@/components/ui/surface';
 import { Text } from '@/components/ui/text';
-import { radius, shadows, spacing } from '@/constants/theme';
+import { radius, spacing } from '@/constants/theme';
 import { getStats } from '@/data/mock-progress';
 import { useTheme } from '@/hooks/use-theme';
 import { useSettings } from '@/stores/settings';
@@ -18,14 +19,13 @@ function chunk<T>(arr: T[], n: number): T[][] {
 }
 
 function Tile({ value, label }: { value: string; label: string }) {
-  const { colors } = useTheme();
   return (
-    <View style={[styles.tile, { backgroundColor: colors.surface, borderColor: colors.border }, shadows.soft]}>
+    <Surface style={styles.tile}>
       <Text variant="displayM">{value}</Text>
       <Text variant="caption" color="textMuted" center>
         {label}
       </Text>
-    </View>
+    </Surface>
   );
 }
 
@@ -54,7 +54,7 @@ export default function StatsScreen() {
           <Tile value={`${stats.accuracy}%`} label="Accuracy" />
         </View>
 
-        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, shadows.soft]}>
+        <Surface style={styles.card}>
           <Text variant="titleM">This week</Text>
           <View style={styles.bars}>
             {stats.week.map((d) => (
@@ -70,9 +70,9 @@ export default function StatsScreen() {
               </View>
             ))}
           </View>
-        </View>
+        </Surface>
 
-        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, shadows.soft]}>
+        <Surface style={styles.card}>
           <Text variant="titleM">Learning trend</Text>
           <Text variant="caption" color="textMuted">
             Words learned per week
@@ -80,9 +80,9 @@ export default function StatsScreen() {
           <View style={{ marginTop: spacing.md }}>
             <AreaChart data={stats.trend} width={CHART_W} height={120} color={colors.accent} />
           </View>
-        </View>
+        </Surface>
 
-        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, shadows.soft]}>
+        <Surface style={styles.card}>
           <Text variant="titleM">Activity</Text>
           <Text variant="caption" color="textMuted">
             Last 5 weeks
@@ -105,7 +105,7 @@ export default function StatsScreen() {
               </View>
             ))}
           </View>
-        </View>
+        </Surface>
       </ScrollView>
     </Screen>
   );
@@ -113,8 +113,8 @@ export default function StatsScreen() {
 
 const styles = StyleSheet.create({
   tiles: { flexDirection: 'row', gap: spacing.md },
-  tile: { flex: 1, alignItems: 'center', paddingVertical: spacing.lg, borderRadius: radius.lg, gap: 2, borderWidth: 1 },
-  card: { gap: 4, padding: spacing.lg, borderRadius: radius.lg, borderWidth: 1 },
+  tile: { flex: 1, alignItems: 'center', paddingVertical: spacing.lg, gap: 2 },
+  card: { gap: 4, padding: spacing.lg },
   bars: { flexDirection: 'row', alignItems: 'flex-end', gap: spacing.sm, marginTop: spacing.md },
   barCol: { flex: 1, alignItems: 'center', gap: spacing.sm },
   barTrack: { width: 18, height: 110, borderRadius: radius.sm, justifyContent: 'flex-end', overflow: 'hidden' },

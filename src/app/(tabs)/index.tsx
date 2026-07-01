@@ -6,6 +6,7 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { Bloom } from '@/components/bloom';
 import { Screen } from '@/components/ui/screen';
+import { Surface } from '@/components/ui/surface';
 import { Text } from '@/components/ui/text';
 import { LANGUAGES, LEVEL_INFO } from '@/constants/languages';
 import { palette, radius, shadows, spacing } from '@/constants/theme';
@@ -21,14 +22,13 @@ function greeting() {
 }
 
 function StatTile({ value, label }: { value: number; label: string }) {
-  const { colors } = useTheme();
   return (
-    <View style={[styles.tile, { backgroundColor: colors.surface, borderColor: colors.border }, shadows.soft]}>
+    <Surface style={styles.tile}>
       <Text variant="displayM">{value}</Text>
       <Text variant="caption" color="textMuted" center>
         {label}
       </Text>
-    </View>
+    </Surface>
   );
 }
 
@@ -89,7 +89,7 @@ export default function HomeScreen() {
                 : `${dailyGoal - summary.learnedToday} words to your goal`}
             </Text>
           </View>
-          <Bloom size={110} progress={goalPct} />
+          <Bloom size={110} />
         </LinearGradient>
 
         <Pressable
@@ -122,7 +122,7 @@ export default function HomeScreen() {
           <Text variant="titleL">Recently learned</Text>
           <View style={{ gap: spacing.sm }}>
             {summary.recent.map((w) => (
-              <View key={w.id} style={[styles.recent, { backgroundColor: colors.surface, borderColor: colors.border }, shadows.soft]}>
+              <Surface key={w.id} style={styles.recent}>
                 <View style={{ flex: 1 }}>
                   <Text variant="titleM">
                     {w.article ? `${w.article} ` : ''}
@@ -133,7 +133,7 @@ export default function HomeScreen() {
                   </Text>
                 </View>
                 <Feather name="check-circle" size={18} color={colors.accent} />
-              </View>
+              </Surface>
             ))}
           </View>
         </View>
@@ -150,6 +150,6 @@ const styles = StyleSheet.create({
   cta: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, padding: spacing.lg, borderRadius: radius.lg },
   ctaIcon: { width: 44, height: 44, borderRadius: 999, alignItems: 'center', justifyContent: 'center' },
   tiles: { flexDirection: 'row', gap: spacing.md },
-  tile: { flex: 1, alignItems: 'center', paddingVertical: spacing.lg, borderRadius: radius.lg, gap: 2, borderWidth: 1 },
-  recent: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, padding: spacing.lg, borderRadius: radius.lg, borderWidth: 1 },
+  tile: { flex: 1, alignItems: 'center', paddingVertical: spacing.lg, gap: 2 },
+  recent: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, padding: spacing.lg },
 });

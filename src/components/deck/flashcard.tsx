@@ -73,7 +73,13 @@ export function Flashcard({ word, nativeLang, flipped = false }: FlashcardProps)
               {word.article}
             </Text>
           ) : null}
-          <Text variant="heroWord" center adjustsFontSizeToFit numberOfLines={2} minimumFontScale={0.5}>
+          <Text
+            variant="heroWord"
+            center
+            adjustsFontSizeToFit
+            numberOfLines={1}
+            minimumFontScale={0.4}
+            style={{ fontSize: 36, lineHeight: 40 }}>
             {word.headword}
           </Text>
           {word.ipa ? (
