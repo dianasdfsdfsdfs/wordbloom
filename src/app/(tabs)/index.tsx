@@ -1,21 +1,188 @@
-import { View } from 'react-native';
+import { Feather } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
+import { useMemo } from 'react';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
+import { Bloom } from '@/components/bloom';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
-import { spacing } from '@/constants/theme';
+import { LANGUAGES, LEVEL_INFO } from '@/constants/languages';
+import { fonts, palette, radius, shadows, spacing } from '@/constants/theme';
+import { getHomeSummary } from '@/data/mock-progress';
+import { useTheme } from '@/hooks/use-theme';
+import { useSettings } from '@/stores/settings';
+
+function greeting() {
+  const h = new Date().getHours();
+  if (h < 12) return 'Good morning';
+  if (h < 18) return 'Good afternoon';
+  return 'Good evening';
+}
+
+function StatTile({ value, label }: { value: number; label: string }) {
+  const { colors } = useTheme();
+  return (
+    <View style={[styles.tile, { backgroundColor: colors.surfaceAlt }]}>
+      <Text variant="displayM">{value}</Text>
+      <Text variant="caption" color="textMuted">
+        {label}
+      </Text>
+    </View>
+  );
+}
 
 export default function HomeScreen() {
+  const router = useRouter();
+  const { colors } = useTheme();
+  const targetLang = useSettings((s) => s.targetLang);
+  const level = useSettings((s) => s.level);
+  const nativeLang = useSettings((s) => s.nativeLang);
+  const dailyGoal = useSettings((s) => s.dailyGoal);
+
+  const summary = useMemo(
+    () => getHomeSummary(targetLang, level, dailyGoal),
+    [targetLang, level, dailyGoal],
+  );
+  const goalPct = dailyGoal ? Math.min(1, summary.learnedToday / dailyGoal) : 0;
+
   return (
     <Screen>
-      <View style={{ flex: 1, justifyContent: 'center', gap: spacing.sm }}>
-        <Text variant="overline" color="brand">
-          Wordbloom
-        </Text>
-        <Text variant="displayL">Grow your{'\n'}vocabulary.</Text>
-        <Text variant="body" color="textSecondary">
-          Your home dashboard is coming next — today’s bloom, streak, and study queue will live here.
-        </Text>
-      </View>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 140, gap: spacing.xl, paddingTop: spacing.sm }}>
+        <View style={styles.headerRow}>
+          <View style={{ flex: 1 }}>
+            <Text variant="overline" color="accent">
+              {greeting()}
+            </Text>
+            <Text variant="displayM">Let&apos;s grow{'\n'}your {LANGUAGES[targetLang].name}.</Text>
+            <Text variant="small" color="textMuted" style={{ marginTop: 4 }}>
+              {LANGUAGES[targetLang].name} · {level} {LEVEL_INFO[level].name}
+            </Text>
+          </View>
+          <View style={[styles.streak, { backgroundColor: colors.surfaceAlt }]}>
+            <Feather name="zap" size={14} color={colors.accent} />
+            <Text variant="titleM" color="accent">
+              {summary.streak}
+            </Text>
+            <Text variant="caption" color="textMuted">
+              days
+            </Text>
+          </View>
+        </View>
+
+        <LinearGradient
+          colors={[palette.wine, palette.garnet] as [string, string]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={[styles.hero, shadows.card]}>
+          <View style={{ flex: 1, gap: 6 }}>
+            <Text variant="overline" style={{ color: palette.blush, opacity: 0.85 }}>
+              Today&apos;s bloom
+            </Text>
+            <View style={styles.goalRow}>
+              <Text variant="displayL" style={{ color: palette.blush }}>
+                {summary.learnedToday}
+              </Text>
+              <Text variant="titleM" style={{ color: palette.blush, opacity: 0.7 }}>
+                / {dailyGoal}
+              </Text>
+            </View>
+            <Text variant="small" style={{ color: palette.blush, opacity: 0.82 }}>
+              {summary.learnedToday >= dailyGoal
+                ? 'Daily goal reached'
+                : `${dailyGoal - summary.learnedToday} words to your goal`}
+            </Text>
+          </View>
+          <Bloom size={108} progress={goalPct} />
+        </LinearGradient>
+
+        <Pressable
+          onPress={() => router.push('/study')}
+          style={({ pressed }) => [
+            styles.cta,
+            { backgroundColor: colors.accent, opacity: pressed ? 0.92 : 1 },
+          ]}>
+          <View style={{ flex: 1 }}>
+            <Text variant="titleL" style={{ color: colors.textOnAccent }}>
+              Start studying
+            </Text>
+            <Text variant="small" style={{ color: colors.textOnAccent, opacity: 0.85 }}>
+              {summary.newAvailable} new · {summary.reviewsDue} to review
+            </Text>
+          </View>
+          <View style={[styles.ctaIcon, { backgroundColor: 'rgba(255,255,255,0.18)' }]}>
+            <Feather name="arrow-right" size={22} color={colors.textOnAccent} />
+          </View>
+        </Pressable>
+
+        <View style={styles.tiles}>
+          <StatTile value={summary.learnedToday} label="Today" />
+          <StatTile value={summary.streak} label="Streak" />
+          <StatTile value={summary.totalLearned} label="Total" />
+        </View>
+
+        <View style={{ gap: spacing.md }}>
+          <Text variant="titleM">Recently learned</Text>
+          <View style={{ gap: spacing.sm }}>
+            {summary.recent.map((w) => (
+              <View
+                key={w.id}
+                style={[styles.recent, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+                <View style={{ flex: 1 }}>
+                  <Text variant="titleM" style={{ fontFamily: fonts.display.semibold }}>
+                    {w.article ? `${w.article} ` : ''}
+                    {w.headword}
+                  </Text>
+                  <Text variant="small" color="textSecondary">
+                    {w.translations[nativeLang] ?? ''}
+                  </Text>
+                </View>
+                <Feather name="check-circle" size={18} color={colors.accent} />
+              </View>
+            ))}
+          </View>
+        </View>
+      </ScrollView>
     </Screen>
   );
 }
+
+const styles = StyleSheet.create({
+  headerRow: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing.md },
+  streak: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+    borderRadius: radius.pill,
+  },
+  hero: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    padding: spacing.xl,
+    borderRadius: radius.card,
+  },
+  goalRow: { flexDirection: 'row', alignItems: 'baseline', gap: 6 },
+  cta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    padding: spacing.lg,
+    borderRadius: radius.lg,
+  },
+  ctaIcon: { width: 44, height: 44, borderRadius: 999, alignItems: 'center', justifyContent: 'center' },
+  tiles: { flexDirection: 'row', gap: spacing.md },
+  tile: { flex: 1, alignItems: 'center', paddingVertical: spacing.lg, borderRadius: radius.lg, gap: 2 },
+  recent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+    padding: spacing.lg,
+    borderRadius: radius.lg,
+    borderWidth: 1,
+  },
+});
