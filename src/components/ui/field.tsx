@@ -14,9 +14,9 @@ export function Field({ label, style, ...rest }: FieldProps) {
   const [focused, setFocused] = useState(false);
 
   return (
-    <View style={{ gap: spacing.xs }}>
+    <View style={{ gap: spacing.sm }}>
       {label ? (
-        <Text variant="caption" color="textSecondary">
+        <Text variant="label" color="textSecondary">
           {label}
         </Text>
       ) : null}
@@ -42,8 +42,8 @@ export function Field({ label, style, ...rest }: FieldProps) {
 
 const styles = StyleSheet.create({
   input: {
-    height: 54,
-    borderWidth: 1,
+    height: 56,
+    borderWidth: 1.5,
     borderRadius: radius.md,
     paddingHorizontal: spacing.lg,
     fontSize: 16,

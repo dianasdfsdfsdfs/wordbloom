@@ -5,7 +5,7 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
 import { LANGUAGES, LEVEL_INFO, TARGET_LANGUAGES } from '@/constants/languages';
-import { radius, spacing } from '@/constants/theme';
+import { radius, shadows, spacing } from '@/constants/theme';
 import { getLevelStats } from '@/data/mock-progress';
 import { useTheme } from '@/hooks/use-theme';
 import { useSettings } from '@/stores/settings';
@@ -33,14 +33,11 @@ export default function LevelsScreen() {
     <Screen>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 140, gap: spacing.xl, paddingTop: spacing.sm }}>
-        <View style={{ gap: spacing.sm }}>
-          <Text variant="overline" color="accent">
-            Collections
-          </Text>
-          <Text variant="displayM">Levels</Text>
-          <Text variant="body" color="textSecondary">
-            Pick the level you&apos;re studying. Switch anytime — your progress is kept per collection.
+        contentContainerStyle={{ paddingBottom: 140, gap: spacing.xl, paddingTop: spacing.md }}>
+        <View style={{ gap: 6 }}>
+          <Text variant="largeTitle">Levels</Text>
+          <Text variant="small" color="textMuted">
+            Choose what you&apos;re studying — switch anytime, progress is kept per collection.
           </Text>
         </View>
 
@@ -51,7 +48,7 @@ export default function LevelsScreen() {
               <Pressable
                 key={l}
                 onPress={() => selectLang(l)}
-                style={[styles.segmentBtn, on ? { backgroundColor: colors.surface } : null]}>
+                style={[styles.segmentBtn, on ? [{ backgroundColor: colors.surface }, shadows.soft] : null]}>
                 <Text variant="titleM" color={on ? 'textPrimary' : 'textMuted'}>
                   {LANGUAGES[l].name}
                 </Text>
@@ -70,14 +67,15 @@ export default function LevelsScreen() {
                 onPress={() => selectLevel(st.level)}
                 style={[
                   styles.row,
+                  shadows.soft,
                   {
                     backgroundColor: colors.surface,
-                    borderColor: active ? colors.accent : colors.border,
-                    borderWidth: active ? 2 : 1,
+                    borderColor: active ? colors.accent : 'transparent',
+                    borderWidth: active ? 2 : 0,
                   },
                 ]}>
                 <View style={[styles.badge, { backgroundColor: active ? colors.accent : colors.surfaceAlt }]}>
-                  <Text variant="titleM" style={{ color: active ? colors.textOnAccent : colors.textPrimary }}>
+                  <Text variant="titleL" style={{ color: active ? colors.textOnAccent : colors.textPrimary }}>
                     {st.level}
                   </Text>
                 </View>
@@ -110,20 +108,9 @@ export default function LevelsScreen() {
 
 const styles = StyleSheet.create({
   segment: { flexDirection: 'row', padding: 4, borderRadius: radius.pill, gap: 4 },
-  segmentBtn: {
-    flex: 1,
-    alignItems: 'center',
-    paddingVertical: spacing.sm,
-    borderRadius: radius.pill,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.md,
-    padding: spacing.lg,
-    borderRadius: radius.lg,
-  },
-  badge: { width: 52, height: 52, borderRadius: radius.md, alignItems: 'center', justifyContent: 'center' },
+  segmentBtn: { flex: 1, alignItems: 'center', paddingVertical: spacing.md, borderRadius: radius.pill },
+  row: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, padding: spacing.lg, borderRadius: radius.lg },
+  badge: { width: 54, height: 54, borderRadius: radius.md, alignItems: 'center', justifyContent: 'center' },
   titleRow: { flexDirection: 'row', alignItems: 'center', gap: spacing.sm },
   chip: { paddingHorizontal: spacing.sm, paddingVertical: 3, borderRadius: radius.pill },
   track: { height: 6, borderRadius: 999, overflow: 'hidden' },

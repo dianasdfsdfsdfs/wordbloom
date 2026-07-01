@@ -41,8 +41,8 @@ export const Bloom = memo(function Bloom({ size = 160, progress = 1, petals = 8 
               cy={petalCy}
               rx={petalRx}
               ry={petalRy}
-              fill={active ? 'url(#bloomPetal)' : palette.ink600}
-              opacity={active ? 1 : 0.35}
+              fill={active ? 'url(#bloomPetal)' : palette.wine}
+              opacity={active ? 1 : 0.92}
               transform={`rotate(${(i * 360) / petals} ${cx} ${cy})`}
             />
           );

@@ -9,11 +9,11 @@ import {
   type ViewStyle,
 } from 'react-native';
 
-import { radius, spacing } from '@/constants/theme';
+import { radius, shadows, spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { Text } from './text';
 
-type Variant = 'primary' | 'accent' | 'secondary' | 'ghost';
+type Variant = 'primary' | 'accent' | 'secondary' | 'ghost' | 'danger';
 type Size = 'lg' | 'md' | 'sm';
 
 export interface ButtonProps extends Omit<PressableProps, 'style' | 'children'> {
@@ -26,7 +26,7 @@ export interface ButtonProps extends Omit<PressableProps, 'style' | 'children'> 
   style?: ViewStyle;
 }
 
-const HEIGHTS: Record<Size, number> = { lg: 56, md: 48, sm: 40 };
+const HEIGHTS: Record<Size, number> = { lg: 56, md: 50, sm: 42 };
 
 export function Button({
   label,
@@ -47,20 +47,21 @@ export function Button({
     accent: colors.accent,
     secondary: colors.surfaceAlt,
     ghost: 'transparent',
+    danger: 'transparent',
   };
   const fg: Record<Variant, string> = {
     primary: colors.textOnBrand,
     accent: colors.textOnAccent,
     secondary: colors.textPrimary,
-    ghost: colors.textSecondary,
+    ghost: colors.brand,
+    danger: colors.danger,
   };
 
+  const isDisabled = disabled || loading;
   const handlePress: PressableProps['onPress'] = (e) => {
     Haptics.selectionAsync().catch(() => {});
     onPress?.(e);
   };
-
-  const isDisabled = disabled || loading;
 
   return (
     <Pressable
@@ -72,9 +73,13 @@ export function Button({
         {
           height: HEIGHTS[size],
           backgroundColor: bg[variant],
-          borderRadius: radius.pill,
-          opacity: disabled ? 0.45 : pressed ? 0.9 : 1,
+          borderRadius: radius.lg,
+          opacity: disabled ? 0.5 : pressed ? 0.94 : 1,
+          transform: [{ scale: pressed && !isDisabled ? 0.985 : 1 }],
         },
+        variant === 'secondary' ? { borderWidth: 1, borderColor: colors.borderStrong } : null,
+        variant === 'danger' ? { borderWidth: 1, borderColor: colors.border } : null,
+        variant === 'primary' || variant === 'accent' || variant === 'secondary' ? shadows.soft : null,
         fullWidth ? { alignSelf: 'stretch' } : null,
         style,
       ]}

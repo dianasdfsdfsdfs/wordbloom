@@ -143,20 +143,20 @@ export const SwipeDeck = forwardRef<SwipeDeckHandle, SwipeDeckProps>(function Sw
   return (
     <View style={styles.deck}>
       {third ? (
-        <View style={[styles.cardPos, styles.thirdCard]} pointerEvents="none">
+        <View key={third.id} style={[styles.cardPos, styles.thirdCard]} pointerEvents="none">
           <Flashcard word={third} nativeLang={nativeLang} />
         </View>
       ) : null}
 
       {second ? (
-        <Animated.View style={[styles.cardPos, secondStyle]} pointerEvents="none">
+        <Animated.View key={second.id} style={[styles.cardPos, secondStyle]} pointerEvents="none">
           <Flashcard word={second} nativeLang={nativeLang} />
         </Animated.View>
       ) : null}
 
       {top ? (
         <GestureDetector gesture={gesture}>
-          <Animated.View style={[styles.cardPos, topStyle]}>
+          <Animated.View key={top.id} style={[styles.cardPos, topStyle]}>
             <Flashcard word={top} nativeLang={nativeLang} flipped={flipped} />
 
             <Animated.View

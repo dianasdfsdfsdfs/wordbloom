@@ -31,7 +31,7 @@ export default function Welcome() {
         <Button label="Get started" fullWidth onPress={() => router.push('/language')} />
         <Button
           label="I already have an account"
-          variant="ghost"
+          variant="secondary"
           fullWidth
           onPress={() => router.push('/login')}
         />

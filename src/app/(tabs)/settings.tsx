@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
 import { LANGUAGES, TARGET_LANGUAGES } from '@/constants/languages';
-import { palette, radius, spacing } from '@/constants/theme';
+import { palette, radius, shadows, spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { type ThemePreference, useSettings } from '@/stores/settings';
 import { CEFR_LEVELS } from '@/types/domain';
@@ -58,17 +58,12 @@ export default function SettingsScreen() {
     <Screen>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 140, gap: spacing.xl, paddingTop: spacing.sm }}>
-        <View style={{ gap: spacing.sm }}>
-          <Text variant="overline" color="accent">
-            You
-          </Text>
-          <Text variant="displayM">Settings</Text>
-        </View>
+        contentContainerStyle={{ paddingBottom: 140, gap: spacing.xl, paddingTop: spacing.md }}>
+        <Text variant="largeTitle">Settings</Text>
 
         <View>
           <SectionTitle>Appearance</SectionTitle>
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={[styles.card, { backgroundColor: colors.surface }, shadows.soft]}>
             <Text variant="bodyMed">Theme</Text>
             <View style={[styles.segment, { backgroundColor: colors.surfaceAlt }]}>
               {THEME_OPTIONS.map((o) => {
@@ -80,7 +75,7 @@ export default function SettingsScreen() {
                       tap();
                       setThemeMode(o.key);
                     }}
-                    style={[styles.segmentBtn, on ? { backgroundColor: colors.surface } : null]}>
+                    style={[styles.segmentBtn, on ? [{ backgroundColor: colors.surface }, shadows.soft] : null]}>
                     <Text variant="small" color={on ? 'textPrimary' : 'textMuted'}>
                       {o.label}
                     </Text>
@@ -93,9 +88,9 @@ export default function SettingsScreen() {
 
         <View>
           <SectionTitle>Learning</SectionTitle>
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border, gap: spacing.lg }]}>
+          <View style={[styles.card, { backgroundColor: colors.surface, gap: spacing.lg }, shadows.soft]}>
             <View style={{ gap: spacing.sm }}>
-              <Text variant="bodyMed">Learning</Text>
+              <Text variant="bodyMed">Language</Text>
               <View style={[styles.segment, { backgroundColor: colors.surfaceAlt }]}>
                 {TARGET_LANGUAGES.map((l) => {
                   const on = l === targetLang;
@@ -106,7 +101,7 @@ export default function SettingsScreen() {
                         tap();
                         setTargetLang(l);
                       }}
-                      style={[styles.segmentBtn, on ? { backgroundColor: colors.surface } : null]}>
+                      style={[styles.segmentBtn, on ? [{ backgroundColor: colors.surface }, shadows.soft] : null]}>
                       <Text variant="small" color={on ? 'textPrimary' : 'textMuted'}>
                         {LANGUAGES[l].name}
                       </Text>
@@ -146,7 +141,7 @@ export default function SettingsScreen() {
               <View style={styles.stepper}>
                 <Pressable
                   onPress={() => changeGoal(-GOAL_STEP)}
-                  style={[styles.stepBtn, { borderColor: colors.border }]}>
+                  style={[styles.stepBtn, { backgroundColor: colors.surfaceAlt }]}>
                   <Feather name="minus" size={18} color={colors.textPrimary} />
                 </Pressable>
                 <View style={{ alignItems: 'center', minWidth: 96 }}>
@@ -157,7 +152,7 @@ export default function SettingsScreen() {
                 </View>
                 <Pressable
                   onPress={() => changeGoal(GOAL_STEP)}
-                  style={[styles.stepBtn, { borderColor: colors.border }]}>
+                  style={[styles.stepBtn, { backgroundColor: colors.surfaceAlt }]}>
                   <Feather name="plus" size={18} color={colors.textPrimary} />
                 </Pressable>
               </View>
@@ -167,7 +162,7 @@ export default function SettingsScreen() {
 
         <View>
           <SectionTitle>Notifications</SectionTitle>
-          <View style={[styles.card, styles.rowBetween, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+          <View style={[styles.card, styles.rowBetween, { backgroundColor: colors.surface }, shadows.soft]}>
             <View style={{ flex: 1 }}>
               <Text variant="bodyMed">Study reminders</Text>
               <Text variant="caption" color="textMuted">
@@ -188,7 +183,7 @@ export default function SettingsScreen() {
 
         <View>
           <SectionTitle>Account</SectionTitle>
-          <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border, gap: spacing.lg }]}>
+          <View style={[styles.card, { backgroundColor: colors.surface, gap: spacing.lg }, shadows.soft]}>
             <View style={styles.rowBetween}>
               <View style={[styles.avatar, { backgroundColor: colors.surfaceAlt }]}>
                 <Feather name="user" size={20} color={colors.textSecondary} />
@@ -201,8 +196,8 @@ export default function SettingsScreen() {
               </View>
             </View>
             <Button
-              label="Reset & start over"
-              variant="secondary"
+              label="Log out"
+              variant="danger"
               fullWidth
               onPress={() => {
                 tap();
@@ -222,13 +217,13 @@ export default function SettingsScreen() {
 
 const styles = StyleSheet.create({
   sectionTitle: { marginBottom: spacing.sm, marginLeft: spacing.xs },
-  card: { gap: spacing.md, padding: spacing.lg, borderRadius: radius.lg, borderWidth: 1 },
+  card: { gap: spacing.md, padding: spacing.lg, borderRadius: radius.lg },
   segment: { flexDirection: 'row', padding: 4, borderRadius: radius.pill, gap: 4 },
   segmentBtn: { flex: 1, alignItems: 'center', paddingVertical: spacing.sm, borderRadius: radius.pill },
   chips: { flexDirection: 'row', flexWrap: 'wrap', gap: spacing.sm },
   chip: { paddingHorizontal: spacing.lg, paddingVertical: spacing.sm, borderRadius: radius.pill, minWidth: 52, alignItems: 'center' },
   stepper: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
-  stepBtn: { width: 48, height: 48, borderRadius: 999, borderWidth: 1, alignItems: 'center', justifyContent: 'center' },
+  stepBtn: { width: 48, height: 48, borderRadius: 999, alignItems: 'center', justifyContent: 'center' },
   rowBetween: { flexDirection: 'row', alignItems: 'center' },
   avatar: { width: 44, height: 44, borderRadius: 999, alignItems: 'center', justifyContent: 'center' },
 });

@@ -17,15 +17,15 @@ export default function SignUp() {
       <ScrollView
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ gap: spacing.xl, paddingVertical: spacing.lg, flexGrow: 1 }}>
-        <View style={{ gap: spacing.sm }}>
-          <Text variant="displayM">Create your{'\n'}account</Text>
+        contentContainerStyle={{ paddingVertical: spacing.xl, flexGrow: 1 }}>
+        <View style={{ gap: spacing.sm, marginBottom: spacing.xxl }}>
+          <Text variant="largeTitle">Create account</Text>
           <Text variant="body" color="textSecondary">
             Save your streak and sync across devices.
           </Text>
         </View>
 
-        <View style={{ gap: spacing.md }}>
+        <View style={{ gap: spacing.lg }}>
           <Field label="Name" placeholder="Your name" autoCapitalize="words" />
           <Field
             label="Email"
@@ -37,11 +37,11 @@ export default function SignUp() {
           <Field label="Password" placeholder="••••••••" secureTextEntry />
         </View>
 
-        <View style={{ gap: spacing.sm, marginTop: 'auto' }}>
+        <View style={{ gap: spacing.md, marginTop: 'auto', paddingTop: spacing.xl }}>
           <Button label="Create account" fullWidth onPress={() => finishOnboarding()} />
           <Button
             label="Log in instead"
-            variant="ghost"
+            variant="secondary"
             fullWidth
             onPress={() => router.replace('/login')}
           />

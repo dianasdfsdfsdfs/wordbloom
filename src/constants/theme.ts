@@ -1,14 +1,9 @@
 /**
- * Wordbloom design tokens — the "Garnet / bloom" botanical identity.
+ * Wordbloom design tokens — the "Garnet / bloom" botanical identity, modern.
  *
  * Concept: red (garnet / wine) is the *bloom* and the deep surfaces;
  * green is *growth* and progress. These are brand colors — NOT swipe
  * semantics (red does not mean "wrong", green does not mean "right").
- *
- * All values derive from the client palette:
- *   Dark Garnet #5C0000 · Dark Wine #751717 · Brick Ember #BA0C0C · Red #FF0000
- *   Bright Fern #27A300 · India Green #2A850E · Olive Leaf #2D661B · Deep Green #005C00
- *   Lavender Blush #FFEBEB · Honeydew #ECFFEB
  */
 import { Platform, type TextStyle } from 'react-native';
 
@@ -16,31 +11,26 @@ import { Platform, type TextStyle } from 'react-native';
 /*  Raw brand palette (+ derived shades)                              */
 /* ------------------------------------------------------------------ */
 export const palette = {
-  // Reds — the bloom
   garnet: '#5C0000',
   wine: '#751717',
   brick: '#BA0C0C',
-  red: '#FF0000', // use sparingly, for critical accents only
-  // Greens — the growth
+  red: '#FF0000',
   fern: '#27A300',
   india: '#2A850E',
   olive: '#2D661B',
   forest: '#005C00',
-  leaf: '#2FB015', // slightly brighter fern for legibility on dark grounds
-  // Light tints
+  leaf: '#2FB015',
   blush: '#FFEBEB',
   honeydew: '#ECFFEB',
-  // Derived warm-dark grounds (garnet-ink, never neutral black)
-  ink900: '#150708',
-  ink800: '#1D0B0D',
-  ink700: '#241012',
-  ink600: '#2C161A',
-  ink500: '#3A1F23',
-  // Derived soft whites / rosy neutrals
-  petal50: '#FFF7F6',
+  ink900: '#140708',
+  ink800: '#1C0B0D',
+  ink700: '#241014',
+  ink600: '#301820',
+  ink500: '#3E2129',
+  petal50: '#FFF7F5',
   petal100: '#FDEDEC',
-  rose300: '#C9A9AC',
-  rose400: '#A98A8D',
+  rose300: '#CBA9AD',
+  rose400: '#AE8B8F',
   rose500: '#8E6E72',
 } as const;
 
@@ -50,13 +40,13 @@ export const palette = {
 export const lightColors = {
   bg: palette.petal50,
   surface: '#FFFFFF',
-  surfaceAlt: '#FFF0EF',
+  surfaceAlt: '#FBEDEC',
   surfaceGreen: palette.honeydew,
   overlay: 'rgba(42,10,11,0.35)',
 
-  textPrimary: '#2B0B0C',
+  textPrimary: '#241012',
   textSecondary: '#7A5457',
-  textMuted: '#A98A8D',
+  textMuted: '#AB8D90',
   textOnBrand: '#FFF3F2',
   textOnAccent: '#F1FFEE',
 
@@ -66,42 +56,41 @@ export const lightColors = {
 
   accent: palette.india,
   accentStrong: palette.forest,
-  accentSoft: '#EAF7E6',
+  accentSoft: '#E6F5E2',
 
-  border: '#F0DAD8',
+  border: '#F0DBD9',
   borderStrong: '#E7C9C7',
-  danger: '#D21414',
+  danger: '#C81E1E',
   shadowTint: 'rgba(92,0,0,0.16)',
 
-  // Swipe feedback — aesthetic pairing, not "correct/incorrect"
   swipePositive: palette.india,
   swipeNegative: palette.brick,
 } as const;
 
 export const darkColors: Record<keyof typeof lightColors, string> = {
   bg: palette.ink900,
-  surface: palette.ink700,
-  surfaceAlt: palette.ink600,
+  surface: '#221016',
+  surfaceAlt: '#2C1620',
   surfaceGreen: '#12240F',
   overlay: 'rgba(0,0,0,0.55)',
 
-  textPrimary: '#FBEAEA',
+  textPrimary: '#FCECEC',
   textSecondary: palette.rose300,
-  textMuted: palette.rose500,
+  textMuted: '#9B7C80',
   textOnBrand: '#FFF3F2',
   textOnAccent: '#F1FFEE',
 
-  brand: palette.brick,
-  brandStrong: palette.wine,
-  brandDeep: palette.garnet,
+  brand: '#D21313',
+  brandStrong: palette.brick,
+  brandDeep: palette.wine,
 
   accent: palette.leaf,
   accentStrong: palette.india,
-  accentSoft: '#16300F',
+  accentSoft: '#17300F',
 
-  border: palette.ink500,
-  borderStrong: '#4A282C',
-  danger: '#FF3B30',
+  border: '#3A2029',
+  borderStrong: '#4C2C35',
+  danger: '#FF5A52',
   shadowTint: 'rgba(0,0,0,0.6)',
 
   swipePositive: palette.leaf,
@@ -133,67 +122,63 @@ export const spacing = {
 
 export const radius = {
   sm: 10,
-  md: 16,
-  lg: 22,
-  xl: 28,
-  card: 30,
+  md: 14,
+  lg: 20,
+  xl: 26,
+  card: 28,
   pill: 999,
 } as const;
 
-/**
- * Font-family names map to the weights loaded via @expo-google-fonts
- * in the root layout. Display = Fraunces (editorial serif, used for
- * headwords & headings). Body = Manrope (humanist grotesque, UI +
- * Cyrillic translations).
- */
+/** One modern family (Inter) across the app; hierarchy via weight + size. */
 export const fonts = {
   display: {
-    regular: 'Fraunces_400Regular',
-    medium: 'Fraunces_500Medium',
-    semibold: 'Fraunces_600SemiBold',
-    bold: 'Fraunces_700Bold',
-    black: 'Fraunces_900Black',
-    italic: 'Fraunces_400Regular_Italic',
+    regular: 'Inter_500Medium',
+    medium: 'Inter_600SemiBold',
+    semibold: 'Inter_700Bold',
+    bold: 'Inter_800ExtraBold',
+    black: 'Inter_900Black',
   },
   body: {
-    regular: 'Manrope_400Regular',
-    medium: 'Manrope_500Medium',
-    semibold: 'Manrope_600SemiBold',
-    bold: 'Manrope_700Bold',
-    extrabold: 'Manrope_800ExtraBold',
+    regular: 'Inter_400Regular',
+    medium: 'Inter_500Medium',
+    semibold: 'Inter_600SemiBold',
+    bold: 'Inter_700Bold',
+    extrabold: 'Inter_800ExtraBold',
   },
 } as const;
 
 export const typeScale = {
-  heroWord: { fontFamily: fonts.display.semibold, fontSize: 46, lineHeight: 50, letterSpacing: -0.6 },
-  displayL: { fontFamily: fonts.display.semibold, fontSize: 34, lineHeight: 40, letterSpacing: -0.4 },
-  displayM: { fontFamily: fonts.display.semibold, fontSize: 26, lineHeight: 32, letterSpacing: -0.3 },
-  titleL: { fontFamily: fonts.body.bold, fontSize: 22, lineHeight: 28, letterSpacing: -0.2 },
-  titleM: { fontFamily: fonts.body.bold, fontSize: 18, lineHeight: 24 },
+  largeTitle: { fontFamily: fonts.display.bold, fontSize: 34, lineHeight: 40, letterSpacing: -0.8 },
+  heroWord: { fontFamily: fonts.display.bold, fontSize: 46, lineHeight: 50, letterSpacing: -1 },
+  displayL: { fontFamily: fonts.display.semibold, fontSize: 30, lineHeight: 36, letterSpacing: -0.6 },
+  displayM: { fontFamily: fonts.display.semibold, fontSize: 24, lineHeight: 30, letterSpacing: -0.5 },
+  titleL: { fontFamily: fonts.display.semibold, fontSize: 20, lineHeight: 26, letterSpacing: -0.3 },
+  titleM: { fontFamily: fonts.body.semibold, fontSize: 17, lineHeight: 22, letterSpacing: -0.2 },
   body: { fontFamily: fonts.body.regular, fontSize: 16, lineHeight: 24 },
   bodyMed: { fontFamily: fonts.body.medium, fontSize: 16, lineHeight: 24 },
   small: { fontFamily: fonts.body.medium, fontSize: 14, lineHeight: 20 },
+  label: { fontFamily: fonts.body.semibold, fontSize: 15, lineHeight: 20, letterSpacing: -0.1 },
   caption: { fontFamily: fonts.body.medium, fontSize: 13, lineHeight: 18 },
   overline: {
     fontFamily: fonts.body.bold,
-    fontSize: 11,
-    lineHeight: 14,
-    letterSpacing: 1.6,
+    fontSize: 12,
+    lineHeight: 16,
+    letterSpacing: 0.4,
     textTransform: 'uppercase',
   },
 } satisfies Record<string, TextStyle>;
 
 const cardShadow =
   Platform.select({
-    ios: { shadowColor: '#3A0000', shadowOpacity: 0.28, shadowRadius: 26, shadowOffset: { width: 0, height: 14 } },
-    android: { elevation: 10 },
+    ios: { shadowColor: '#2A0A0B', shadowOpacity: 0.1, shadowRadius: 18, shadowOffset: { width: 0, height: 10 } },
+    android: { elevation: 5 },
     default: {},
   }) ?? {};
 
 const softShadow =
   Platform.select({
-    ios: { shadowColor: '#3A0000', shadowOpacity: 0.16, shadowRadius: 12, shadowOffset: { width: 0, height: 6 } },
-    android: { elevation: 4 },
+    ios: { shadowColor: '#2A0A0B', shadowOpacity: 0.08, shadowRadius: 9, shadowOffset: { width: 0, height: 4 } },
+    android: { elevation: 3 },
     default: {},
   }) ?? {};
 

@@ -8,7 +8,7 @@ import { Bloom } from '@/components/bloom';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
 import { LANGUAGES, LEVEL_INFO } from '@/constants/languages';
-import { fonts, palette, radius, shadows, spacing } from '@/constants/theme';
+import { palette, radius, shadows, spacing } from '@/constants/theme';
 import { getHomeSummary } from '@/data/mock-progress';
 import { useTheme } from '@/hooks/use-theme';
 import { useSettings } from '@/stores/settings';
@@ -23,9 +23,9 @@ function greeting() {
 function StatTile({ value, label }: { value: number; label: string }) {
   const { colors } = useTheme();
   return (
-    <View style={[styles.tile, { backgroundColor: colors.surfaceAlt }]}>
+    <View style={[styles.tile, { backgroundColor: colors.surface }, shadows.soft]}>
       <Text variant="displayM">{value}</Text>
-      <Text variant="caption" color="textMuted">
+      <Text variant="caption" color="textMuted" center>
         {label}
       </Text>
     </View>
@@ -50,24 +50,18 @@ export default function HomeScreen() {
     <Screen>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 140, gap: spacing.xl, paddingTop: spacing.sm }}>
-        <View style={styles.headerRow}>
+        contentContainerStyle={{ paddingBottom: 140, gap: spacing.xl, paddingTop: spacing.md }}>
+        <View style={styles.header}>
           <View style={{ flex: 1 }}>
-            <Text variant="overline" color="accent">
-              {greeting()}
-            </Text>
-            <Text variant="displayM">Let&apos;s grow{'\n'}your {LANGUAGES[targetLang].name}.</Text>
-            <Text variant="small" color="textMuted" style={{ marginTop: 4 }}>
+            <Text variant="largeTitle">{greeting()}</Text>
+            <Text variant="small" color="textMuted" style={{ marginTop: 6 }}>
               {LANGUAGES[targetLang].name} · {level} {LEVEL_INFO[level].name}
             </Text>
           </View>
-          <View style={[styles.streak, { backgroundColor: colors.surfaceAlt }]}>
-            <Feather name="zap" size={14} color={colors.accent} />
+          <View style={[styles.streak, { backgroundColor: colors.surface }, shadows.soft]}>
+            <Feather name="zap" size={15} color={colors.accent} />
             <Text variant="titleM" color="accent">
               {summary.streak}
-            </Text>
-            <Text variant="caption" color="textMuted">
-              days
             </Text>
           </View>
         </View>
@@ -78,14 +72,14 @@ export default function HomeScreen() {
           end={{ x: 1, y: 1 }}
           style={[styles.hero, shadows.card]}>
           <View style={{ flex: 1, gap: 6 }}>
-            <Text variant="overline" style={{ color: palette.blush, opacity: 0.85 }}>
+            <Text variant="overline" style={{ color: palette.blush, opacity: 0.8 }}>
               Today&apos;s bloom
             </Text>
             <View style={styles.goalRow}>
-              <Text variant="displayL" style={{ color: palette.blush }}>
+              <Text variant="heroWord" style={{ color: palette.blush, fontSize: 40, lineHeight: 44 }}>
                 {summary.learnedToday}
               </Text>
-              <Text variant="titleM" style={{ color: palette.blush, opacity: 0.7 }}>
+              <Text variant="titleL" style={{ color: palette.blush, opacity: 0.65 }}>
                 / {dailyGoal}
               </Text>
             </View>
@@ -95,14 +89,15 @@ export default function HomeScreen() {
                 : `${dailyGoal - summary.learnedToday} words to your goal`}
             </Text>
           </View>
-          <Bloom size={108} progress={goalPct} />
+          <Bloom size={110} progress={goalPct} />
         </LinearGradient>
 
         <Pressable
           onPress={() => router.push('/study')}
           style={({ pressed }) => [
             styles.cta,
-            { backgroundColor: colors.accent, opacity: pressed ? 0.92 : 1 },
+            shadows.soft,
+            { backgroundColor: colors.accent, opacity: pressed ? 0.94 : 1, transform: [{ scale: pressed ? 0.99 : 1 }] },
           ]}>
           <View style={{ flex: 1 }}>
             <Text variant="titleL" style={{ color: colors.textOnAccent }}>
@@ -119,19 +114,17 @@ export default function HomeScreen() {
 
         <View style={styles.tiles}>
           <StatTile value={summary.learnedToday} label="Today" />
-          <StatTile value={summary.streak} label="Streak" />
+          <StatTile value={summary.streak} label="Day streak" />
           <StatTile value={summary.totalLearned} label="Total" />
         </View>
 
         <View style={{ gap: spacing.md }}>
-          <Text variant="titleM">Recently learned</Text>
+          <Text variant="titleL">Recently learned</Text>
           <View style={{ gap: spacing.sm }}>
             {summary.recent.map((w) => (
-              <View
-                key={w.id}
-                style={[styles.recent, { backgroundColor: colors.surface, borderColor: colors.border }]}>
+              <View key={w.id} style={[styles.recent, { backgroundColor: colors.surface }, shadows.soft]}>
                 <View style={{ flex: 1 }}>
-                  <Text variant="titleM" style={{ fontFamily: fonts.display.semibold }}>
+                  <Text variant="titleM">
                     {w.article ? `${w.article} ` : ''}
                     {w.headword}
                   </Text>
@@ -150,39 +143,13 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  headerRow: { flexDirection: 'row', alignItems: 'flex-start', gap: spacing.md },
-  streak: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
-    borderRadius: radius.pill,
-  },
-  hero: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.md,
-    padding: spacing.xl,
-    borderRadius: radius.card,
-  },
+  header: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', gap: spacing.md },
+  streak: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: spacing.md, height: 40, borderRadius: radius.pill },
+  hero: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, padding: spacing.xl, borderRadius: radius.card },
   goalRow: { flexDirection: 'row', alignItems: 'baseline', gap: 6 },
-  cta: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.md,
-    padding: spacing.lg,
-    borderRadius: radius.lg,
-  },
+  cta: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, padding: spacing.lg, borderRadius: radius.lg },
   ctaIcon: { width: 44, height: 44, borderRadius: 999, alignItems: 'center', justifyContent: 'center' },
   tiles: { flexDirection: 'row', gap: spacing.md },
   tile: { flex: 1, alignItems: 'center', paddingVertical: spacing.lg, borderRadius: radius.lg, gap: 2 },
-  recent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: spacing.md,
-    padding: spacing.lg,
-    borderRadius: radius.lg,
-    borderWidth: 1,
-  },
+  recent: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, padding: spacing.lg, borderRadius: radius.lg },
 });
