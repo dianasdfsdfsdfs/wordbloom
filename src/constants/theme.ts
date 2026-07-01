@@ -149,7 +149,7 @@ export const fonts = {
 
 export const typeScale = {
   largeTitle: { fontFamily: fonts.display.bold, fontSize: 34, lineHeight: 40, letterSpacing: -0.8 },
-  heroWord: { fontFamily: fonts.display.bold, fontSize: 46, lineHeight: 50, letterSpacing: -1 },
+  heroWord: { fontFamily: fonts.display.bold, fontSize: 40, lineHeight: 44, letterSpacing: -0.8 },
   displayL: { fontFamily: fonts.display.semibold, fontSize: 30, lineHeight: 36, letterSpacing: -0.6 },
   displayM: { fontFamily: fonts.display.semibold, fontSize: 24, lineHeight: 30, letterSpacing: -0.5 },
   titleL: { fontFamily: fonts.display.semibold, fontSize: 20, lineHeight: 26, letterSpacing: -0.3 },

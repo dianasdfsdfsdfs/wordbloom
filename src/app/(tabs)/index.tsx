@@ -23,7 +23,7 @@ function greeting() {
 function StatTile({ value, label }: { value: number; label: string }) {
   const { colors } = useTheme();
   return (
-    <View style={[styles.tile, { backgroundColor: colors.surface }, shadows.soft]}>
+    <View style={[styles.tile, { backgroundColor: colors.surface, borderColor: colors.border }, shadows.soft]}>
       <Text variant="displayM">{value}</Text>
       <Text variant="caption" color="textMuted" center>
         {label}
@@ -58,7 +58,7 @@ export default function HomeScreen() {
               {LANGUAGES[targetLang].name} · {level} {LEVEL_INFO[level].name}
             </Text>
           </View>
-          <View style={[styles.streak, { backgroundColor: colors.surface }, shadows.soft]}>
+          <View style={[styles.streak, { backgroundColor: colors.surface, borderColor: colors.border }, shadows.soft]}>
             <Feather name="zap" size={15} color={colors.accent} />
             <Text variant="titleM" color="accent">
               {summary.streak}
@@ -122,7 +122,7 @@ export default function HomeScreen() {
           <Text variant="titleL">Recently learned</Text>
           <View style={{ gap: spacing.sm }}>
             {summary.recent.map((w) => (
-              <View key={w.id} style={[styles.recent, { backgroundColor: colors.surface }, shadows.soft]}>
+              <View key={w.id} style={[styles.recent, { backgroundColor: colors.surface, borderColor: colors.border }, shadows.soft]}>
                 <View style={{ flex: 1 }}>
                   <Text variant="titleM">
                     {w.article ? `${w.article} ` : ''}
@@ -144,12 +144,12 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', gap: spacing.md },
-  streak: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: spacing.md, height: 40, borderRadius: radius.pill },
+  streak: { flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: spacing.md, height: 40, borderRadius: radius.pill, borderWidth: 1 },
   hero: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, padding: spacing.xl, borderRadius: radius.card },
   goalRow: { flexDirection: 'row', alignItems: 'baseline', gap: 6 },
   cta: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, padding: spacing.lg, borderRadius: radius.lg },
   ctaIcon: { width: 44, height: 44, borderRadius: 999, alignItems: 'center', justifyContent: 'center' },
   tiles: { flexDirection: 'row', gap: spacing.md },
-  tile: { flex: 1, alignItems: 'center', paddingVertical: spacing.lg, borderRadius: radius.lg, gap: 2 },
-  recent: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, padding: spacing.lg, borderRadius: radius.lg },
+  tile: { flex: 1, alignItems: 'center', paddingVertical: spacing.lg, borderRadius: radius.lg, gap: 2, borderWidth: 1 },
+  recent: { flexDirection: 'row', alignItems: 'center', gap: spacing.md, padding: spacing.lg, borderRadius: radius.lg, borderWidth: 1 },
 });

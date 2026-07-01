@@ -40,7 +40,7 @@ export function WordbloomTabBar({ state, navigation }: TabBarProps) {
         <Feather name={meta.icon} size={22} color={focused ? colors.accent : colors.textMuted} />
         <Text
           variant="overline"
-          style={{ color: focused ? colors.accent : colors.textMuted, marginTop: 4, letterSpacing: 0.6 }}>
+          style={{ color: focused ? colors.accent : colors.textMuted, marginTop: 4, fontSize: 10, lineHeight: 13, letterSpacing: 0.4 }}>
           {meta.label}
         </Text>
         <View style={[styles.dot, { backgroundColor: focused ? colors.accent : 'transparent' }]} />

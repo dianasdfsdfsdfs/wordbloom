@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { ScrollView, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 
 import { Button } from '@/components/ui/button';
 import { Field } from '@/components/ui/field';
@@ -17,8 +17,8 @@ export default function SignUp() {
       <ScrollView
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ paddingVertical: spacing.xl, flexGrow: 1 }}>
-        <View style={{ gap: spacing.sm, marginBottom: spacing.xxl }}>
+        contentContainerStyle={{ paddingVertical: spacing.xxl, gap: spacing.xl }}>
+        <View style={{ gap: spacing.sm }}>
           <Text variant="largeTitle">Create account</Text>
           <Text variant="body" color="textSecondary">
             Save your streak and sync across devices.
@@ -37,14 +37,13 @@ export default function SignUp() {
           <Field label="Password" placeholder="••••••••" secureTextEntry />
         </View>
 
-        <View style={{ gap: spacing.md, marginTop: 'auto', paddingTop: spacing.xl }}>
+        <View style={{ gap: spacing.lg, marginTop: spacing.sm }}>
           <Button label="Create account" fullWidth onPress={() => finishOnboarding()} />
-          <Button
-            label="Log in instead"
-            variant="secondary"
-            fullWidth
-            onPress={() => router.replace('/login')}
-          />
+          <Pressable onPress={() => router.replace('/login')} hitSlop={8} style={{ alignSelf: 'center' }}>
+            <Text variant="small" color="textSecondary">
+              Already have an account? <Text variant="small" color="brand">Log in</Text>
+            </Text>
+          </Pressable>
         </View>
       </ScrollView>
     </Screen>

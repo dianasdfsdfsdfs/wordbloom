@@ -70,8 +70,8 @@ export default function LevelsScreen() {
                   shadows.soft,
                   {
                     backgroundColor: colors.surface,
-                    borderColor: active ? colors.accent : 'transparent',
-                    borderWidth: active ? 2 : 0,
+                    borderColor: active ? colors.accent : colors.border,
+                    borderWidth: active ? 2 : 1,
                   },
                 ]}>
                 <View style={[styles.badge, { backgroundColor: active ? colors.accent : colors.surfaceAlt }]}>

@@ -42,9 +42,14 @@ export const SwipeDeck = forwardRef<SwipeDeckHandle, SwipeDeckProps>(function Sw
   const { colors } = useTheme();
   const [index, setIndex] = useState(0);
   const [flipped, setFlipped] = useState(false);
+  const [exiting, setExiting] = useState<{ word: Word; dir: SwipeDirection } | null>(null);
 
+  // Drag state for the interactive top card.
   const x = useSharedValue(0);
   const y = useSharedValue(0);
+  // Independent fly-off layer for the card that was just swiped.
+  const exitX = useSharedValue(0);
+  const exitY = useSharedValue(0);
 
   const topWordRef = useRef<Word | undefined>(words[index]);
   topWordRef.current = words[index];
@@ -52,6 +57,7 @@ export const SwipeDeck = forwardRef<SwipeDeckHandle, SwipeDeckProps>(function Sw
   useEffect(() => {
     setIndex(0);
     setFlipped(false);
+    setExiting(null);
     x.value = 0;
     y.value = 0;
   }, [words, x, y]);
@@ -60,32 +66,39 @@ export const SwipeDeck = forwardRef<SwipeDeckHandle, SwipeDeckProps>(function Sw
     if (words.length > 0 && index >= words.length) onComplete?.();
   }, [index, words.length, onComplete]);
 
+  const clearExiting = useCallback(() => setExiting(null), []);
   const toggleFlip = useCallback(() => setFlipped((f) => !f), []);
 
-  const handleSwipe = useCallback(
-    (direction: SwipeDirection) => {
+  const commitSwipe = useCallback(
+    (direction: SwipeDirection, fromX: number, fromY: number) => {
       const word = topWordRef.current;
-      if (word) onSwipe(word, direction);
-      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
-      setFlipped(false);
+      if (!word) return;
+
+      // Hand the outgoing card to the independent fly-off layer.
+      setExiting({ word, dir: direction });
+      exitX.value = fromX;
+      exitY.value = fromY;
+      const sign = direction === 'right' ? 1 : -1;
+      exitX.value = withTiming(sign * width * 1.5, { duration: 260 }, (finished) => {
+        if (finished) runOnJS(clearExiting)();
+      });
+      exitY.value = withTiming(fromY - 30, { duration: 260 });
+
+      // Advance the deck immediately — the new card is already at rest.
       x.value = 0;
       y.value = 0;
+      setFlipped(false);
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+      onSwipe(word, direction);
       setIndex((i) => i + 1);
     },
-    [onSwipe, x, y],
+    [onSwipe, clearExiting, exitX, exitY, x, y],
   );
 
   const triggerSwipe = useCallback(
-    (direction: SwipeDirection) => {
-      const sign = direction === 'right' ? 1 : -1;
-      x.value = withTiming(sign * width * 1.4, { duration: 240 }, (finished) => {
-        if (finished) runOnJS(handleSwipe)(direction);
-      });
-      y.value = withTiming(-20, { duration: 240 });
-    },
-    [handleSwipe, x, y],
+    (direction: SwipeDirection) => commitSwipe(direction, 0, 0),
+    [commitSwipe],
   );
-
   useImperativeHandle(ref, () => ({ swipe: triggerSwipe }), [triggerSwipe]);
 
   const gesture = useMemo(() => {
@@ -98,11 +111,7 @@ export const SwipeDeck = forwardRef<SwipeDeckHandle, SwipeDeckProps>(function Sw
       .onEnd((e) => {
         const passed = Math.abs(e.translationX) > SWIPE_X || Math.abs(e.velocityX) > 900;
         if (passed) {
-          const dir = e.translationX > 0 ? 1 : -1;
-          x.value = withTiming(dir * width * 1.4, { duration: 220 }, (finished) => {
-            if (finished) runOnJS(handleSwipe)(dir > 0 ? 'right' : 'left');
-          });
-          y.value = withTiming(e.translationY + 24, { duration: 220 });
+          runOnJS(commitSwipe)(e.translationX > 0 ? 'right' : 'left', e.translationX, e.translationY);
         } else {
           x.value = withSpring(0, { damping: 18, stiffness: 170 });
           y.value = withSpring(0, { damping: 18, stiffness: 170 });
@@ -114,13 +123,21 @@ export const SwipeDeck = forwardRef<SwipeDeckHandle, SwipeDeckProps>(function Sw
       .onEnd(() => runOnJS(toggleFlip)());
 
     return Gesture.Race(pan, tap);
-  }, [handleSwipe, toggleFlip, x, y]);
+  }, [commitSwipe, toggleFlip, x, y]);
 
   const topStyle = useAnimatedStyle(() => ({
     transform: [
       { translateX: x.value },
       { translateY: y.value },
       { rotateZ: `${interpolate(x.value, [-width / 2, width / 2], [-9, 9], Extrapolation.CLAMP)}deg` },
+    ],
+  }));
+
+  const exitStyle = useAnimatedStyle(() => ({
+    transform: [
+      { translateX: exitX.value },
+      { translateY: exitY.value },
+      { rotateZ: `${interpolate(exitX.value, [-width, width], [-12, 12], Extrapolation.CLAMP)}deg` },
     ],
   }));
 
@@ -178,6 +195,12 @@ export const SwipeDeck = forwardRef<SwipeDeckHandle, SwipeDeckProps>(function Sw
             </Animated.View>
           </Animated.View>
         </GestureDetector>
+      ) : null}
+
+      {exiting ? (
+        <Animated.View style={[styles.cardPos, exitStyle]} pointerEvents="none">
+          <Flashcard word={exiting.word} nativeLang={nativeLang} />
+        </Animated.View>
       ) : null}
     </View>
   );

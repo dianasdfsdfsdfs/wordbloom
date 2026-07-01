@@ -20,7 +20,7 @@ function chunk<T>(arr: T[], n: number): T[][] {
 function Tile({ value, label }: { value: string; label: string }) {
   const { colors } = useTheme();
   return (
-    <View style={[styles.tile, { backgroundColor: colors.surface }, shadows.soft]}>
+    <View style={[styles.tile, { backgroundColor: colors.surface, borderColor: colors.border }, shadows.soft]}>
       <Text variant="displayM">{value}</Text>
       <Text variant="caption" color="textMuted" center>
         {label}
@@ -54,7 +54,7 @@ export default function StatsScreen() {
           <Tile value={`${stats.accuracy}%`} label="Accuracy" />
         </View>
 
-        <View style={[styles.card, { backgroundColor: colors.surface }, shadows.soft]}>
+        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, shadows.soft]}>
           <Text variant="titleM">This week</Text>
           <View style={styles.bars}>
             {stats.week.map((d) => (
@@ -72,7 +72,7 @@ export default function StatsScreen() {
           </View>
         </View>
 
-        <View style={[styles.card, { backgroundColor: colors.surface }, shadows.soft]}>
+        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, shadows.soft]}>
           <Text variant="titleM">Learning trend</Text>
           <Text variant="caption" color="textMuted">
             Words learned per week
@@ -82,7 +82,7 @@ export default function StatsScreen() {
           </View>
         </View>
 
-        <View style={[styles.card, { backgroundColor: colors.surface }, shadows.soft]}>
+        <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border }, shadows.soft]}>
           <Text variant="titleM">Activity</Text>
           <Text variant="caption" color="textMuted">
             Last 5 weeks
@@ -113,8 +113,8 @@ export default function StatsScreen() {
 
 const styles = StyleSheet.create({
   tiles: { flexDirection: 'row', gap: spacing.md },
-  tile: { flex: 1, alignItems: 'center', paddingVertical: spacing.lg, borderRadius: radius.lg, gap: 2 },
-  card: { gap: 4, padding: spacing.lg, borderRadius: radius.lg },
+  tile: { flex: 1, alignItems: 'center', paddingVertical: spacing.lg, borderRadius: radius.lg, gap: 2, borderWidth: 1 },
+  card: { gap: 4, padding: spacing.lg, borderRadius: radius.lg, borderWidth: 1 },
   bars: { flexDirection: 'row', alignItems: 'flex-end', gap: spacing.sm, marginTop: spacing.md },
   barCol: { flex: 1, alignItems: 'center', gap: spacing.sm },
   barTrack: { width: 18, height: 110, borderRadius: radius.sm, justifyContent: 'flex-end', overflow: 'hidden' },

@@ -5,18 +5,13 @@ import { palette } from '@/constants/theme';
 
 export interface BloomProps {
   size?: number;
-  /** 0–1: share of petals that have "bloomed". */
+  /** Kept for API compatibility; the flower always renders full. */
   progress?: number;
   petals?: number;
 }
 
-/**
- * The Wordbloom signature: a garnet blossom whose petals open as you learn.
- * Bloomed petals are filled garnet; not-yet-learned petals stay dim buds.
- */
-export const Bloom = memo(function Bloom({ size = 160, progress = 1, petals = 8 }: BloomProps) {
-  const clamped = Math.max(0, Math.min(1, progress));
-  const bloomed = Math.round(clamped * petals);
+/** The Wordbloom signature: a full garnet blossom. */
+export const Bloom = memo(function Bloom({ size = 160, petals = 8 }: BloomProps) {
   const cx = size / 2;
   const cy = size / 2;
   const petalRx = size * 0.135;
@@ -32,21 +27,17 @@ export const Bloom = memo(function Bloom({ size = 160, progress = 1, petals = 8 
         </RadialGradient>
       </Defs>
       <G>
-        {Array.from({ length: petals }).map((_, i) => {
-          const active = i < bloomed;
-          return (
-            <Ellipse
-              key={i}
-              cx={cx}
-              cy={petalCy}
-              rx={petalRx}
-              ry={petalRy}
-              fill={active ? 'url(#bloomPetal)' : palette.wine}
-              opacity={active ? 1 : 0.92}
-              transform={`rotate(${(i * 360) / petals} ${cx} ${cy})`}
-            />
-          );
-        })}
+        {Array.from({ length: petals }).map((_, i) => (
+          <Ellipse
+            key={i}
+            cx={cx}
+            cy={petalCy}
+            rx={petalRx}
+            ry={petalRy}
+            fill="url(#bloomPetal)"
+            transform={`rotate(${(i * 360) / petals} ${cx} ${cy})`}
+          />
+        ))}
         <Circle cx={cx} cy={cy} r={size * 0.13} fill={palette.forest} />
         <Circle cx={cx} cy={cy} r={size * 0.07} fill={palette.honeydew} />
       </G>
