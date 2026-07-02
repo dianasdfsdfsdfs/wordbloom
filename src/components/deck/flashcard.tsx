@@ -78,8 +78,8 @@ export function Flashcard({ word, nativeLang, flipped = false }: FlashcardProps)
             center
             adjustsFontSizeToFit
             numberOfLines={1}
-            minimumFontScale={0.4}
-            style={{ fontSize: 36, lineHeight: 40 }}>
+            minimumFontScale={0.3}
+            style={{ alignSelf: 'stretch', fontSize: 40 }}>
             {word.headword}
           </Text>
           {word.ipa ? (

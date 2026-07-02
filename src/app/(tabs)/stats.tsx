@@ -37,10 +37,10 @@ export default function StatsScreen() {
   const maxWeek = Math.max(...stats.week.map((w) => w.count), 1);
 
   return (
-    <Screen>
+    <Screen padded={false}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 140, gap: spacing.xl, paddingTop: spacing.md }}>
+        contentContainerStyle={{ paddingBottom: 140, gap: spacing.xl, paddingTop: spacing.md, paddingHorizontal: spacing.xl }}>
         <View style={{ gap: 6 }}>
           <Text variant="largeTitle">Stats</Text>
           <Text variant="small" color="textMuted">

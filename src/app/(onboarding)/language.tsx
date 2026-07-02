@@ -53,7 +53,7 @@ export default function LanguagePick() {
         ))}
       </View>
 
-      <View style={{ paddingTop: spacing.lg, borderTopWidth: 1, borderTopColor: colors.border }}>
+      <View style={{ paddingTop: spacing.lg, paddingBottom: spacing.md, borderTopWidth: 1, borderTopColor: colors.border }}>
         <Button label="Continue" fullWidth disabled={!selected} onPress={onContinue} />
       </View>
     </Screen>

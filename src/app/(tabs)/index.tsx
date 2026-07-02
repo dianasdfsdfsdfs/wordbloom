@@ -47,10 +47,10 @@ export default function HomeScreen() {
   const goalPct = dailyGoal ? Math.min(1, summary.learnedToday / dailyGoal) : 0;
 
   return (
-    <Screen>
+    <Screen padded={false}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 140, gap: spacing.xl, paddingTop: spacing.md }}>
+        contentContainerStyle={{ paddingBottom: 140, gap: spacing.xl, paddingTop: spacing.md, paddingHorizontal: spacing.xl }}>
         <View style={styles.header}>
           <View style={{ flex: 1 }}>
             <Text variant="largeTitle">{greeting()}</Text>
@@ -67,7 +67,7 @@ export default function HomeScreen() {
         </View>
 
         <LinearGradient
-          colors={[palette.wine, palette.garnet] as [string, string]}
+          colors={[palette.brick, palette.garnet] as [string, string]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={[styles.hero, shadows.card]}>
@@ -95,21 +95,26 @@ export default function HomeScreen() {
         <Pressable
           onPress={() => router.push('/study')}
           style={({ pressed }) => [
-            styles.cta,
+            { borderRadius: radius.lg, opacity: pressed ? 0.94 : 1, transform: [{ scale: pressed ? 0.99 : 1 }] },
             shadows.soft,
-            { backgroundColor: colors.accent, opacity: pressed ? 0.94 : 1, transform: [{ scale: pressed ? 0.99 : 1 }] },
           ]}>
-          <View style={{ flex: 1 }}>
-            <Text variant="titleL" style={{ color: colors.textOnAccent }}>
-              Start studying
-            </Text>
-            <Text variant="small" style={{ color: colors.textOnAccent, opacity: 0.85 }}>
-              {summary.newAvailable} new · {summary.reviewsDue} to review
-            </Text>
-          </View>
-          <View style={[styles.ctaIcon, { backgroundColor: 'rgba(255,255,255,0.18)' }]}>
-            <Feather name="arrow-right" size={22} color={colors.textOnAccent} />
-          </View>
+          <LinearGradient
+            colors={[palette.leaf, palette.india] as [string, string]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.cta}>
+            <View style={{ flex: 1 }}>
+              <Text variant="titleL" style={{ color: colors.textOnAccent }}>
+                Start studying
+              </Text>
+              <Text variant="small" style={{ color: colors.textOnAccent, opacity: 0.9 }}>
+                {summary.newAvailable} new · {summary.reviewsDue} to review
+              </Text>
+            </View>
+            <View style={[styles.ctaIcon, { backgroundColor: 'rgba(255,255,255,0.2)' }]}>
+              <Feather name="arrow-right" size={22} color={colors.textOnAccent} />
+            </View>
+          </LinearGradient>
         </Pressable>
 
         <View style={styles.tiles}>

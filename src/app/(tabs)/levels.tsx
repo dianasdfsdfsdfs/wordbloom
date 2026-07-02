@@ -31,10 +31,10 @@ export default function LevelsScreen() {
   };
 
   return (
-    <Screen>
+    <Screen padded={false}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 140, gap: spacing.xl, paddingTop: spacing.md }}>
+        contentContainerStyle={{ paddingBottom: 140, gap: spacing.xl, paddingTop: spacing.md, paddingHorizontal: spacing.xl }}>
         <View style={{ gap: 6 }}>
           <Text variant="largeTitle">Levels</Text>
           <Text variant="small" color="textMuted">

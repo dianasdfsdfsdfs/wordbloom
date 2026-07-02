@@ -56,10 +56,10 @@ export default function SettingsScreen() {
   };
 
   return (
-    <Screen>
+    <Screen padded={false}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 140, gap: spacing.xl, paddingTop: spacing.md }}>
+        contentContainerStyle={{ paddingBottom: 140, gap: spacing.xl, paddingTop: spacing.md, paddingHorizontal: spacing.xl }}>
         <Text variant="largeTitle">Settings</Text>
 
         <View>
