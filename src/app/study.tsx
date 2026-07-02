@@ -1,7 +1,7 @@
 import { Feather } from '@expo/vector-icons';
 import * as Speech from 'expo-speech';
 import { useRouter } from 'expo-router';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Bloom } from '@/components/bloom';
@@ -28,21 +28,27 @@ export default function StudyScreen() {
   const level = useSettings((s) => s.level);
   const dailyGoal = useSettings((s) => s.dailyGoal);
   const review = useProgress((s) => s.review);
+  const byWord = useProgress((s) => s.byWord);
 
   const [sessionId, setSessionId] = useState(0);
-  const session = useMemo(() => {
+  const initial = useMemo(() => {
     const pool = getWords(targetLang, level, false);
     const words = pool.length > 0 ? pool : getWords(targetLang, 'A1', false);
     return buildSession(words, useProgress.getState().byWord, dailyGoal);
-    // rebuild only on level/lang/goal change or restart — not on every review
+    // Rebuild only on level/lang/goal change or an explicit restart.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [targetLang, level, dailyGoal, sessionId]);
 
   const deckRef = useRef<SwipeDeckHandle>(null);
-  const [known, setKnown] = useState(0);
+  const [queue, setQueue] = useState<Word[]>(initial);
   const [done, setDone] = useState(false);
   const [current, setCurrent] = useState<Word | null>(null);
-  const byWord = useProgress((s) => s.byWord);
+
+  // New session (level/lang/goal change or "Study again"): refill the pile.
+  useEffect(() => {
+    setQueue(initial);
+    setDone(false);
+  }, [initial]);
 
   const speak = () => {
     if (!current) return;
@@ -53,26 +59,31 @@ export default function StudyScreen() {
   const onSwipe = useCallback(
     (word: Word, dir: SwipeDirection) => {
       review(word.id, dir === 'right' ? 'known' : 'unknown');
-      if (dir === 'right') setKnown((k) => k + 1);
+      // A word still being learned comes back later this session until it sticks.
+      if (useProgress.getState().byWord[word.id]?.status === 'learning') {
+        setQueue((q) => [...q, word]);
+      }
     },
     [review],
   );
 
   const restart = () => {
-    setKnown(0);
     setDone(false);
     setSessionId((s) => s + 1);
   };
 
-  const total = session.length;
-  const empty = total === 0;
+  const goHome = () => router.replace('/(tabs)');
+  const closeStudy = () => (router.canGoBack() ? router.back() : goHome());
+
+  const empty = initial.length === 0;
   const learned = learnedTodayCount(byWord);
   const goalPct = dailyGoal > 0 ? Math.min(1, learned / dailyGoal) : 0;
+  const deckKey = `${targetLang}-${level}-${sessionId}`;
 
   return (
     <Screen edges={['top', 'bottom']}>
       <View style={styles.header}>
-        <Pressable onPress={() => router.back()} hitSlop={10}>
+        <Pressable onPress={closeStudy} hitSlop={10} accessibilityLabel="Close">
           <Feather name="x" size={26} color={colors.textPrimary} />
         </Pressable>
         <View style={[styles.track, { backgroundColor: colors.surfaceAlt }]}>
@@ -96,12 +107,12 @@ export default function StudyScreen() {
               {empty ? 'All caught up' : 'Session complete'}
             </Text>
             <Text variant="displayM" center>
-              {empty ? 'Nothing due right now' : 'Nicely done'}
+              {empty ? 'Nothing to review right now' : 'Nicely done'}
             </Text>
             <Text variant="body" color="textSecondary" center>
               {empty
-                ? 'No cards are due and there are no new words queued. Come back a little later — your reviews will be waiting.'
-                : `You knew ${known} of ${total} ${total === 1 ? 'word' : 'words'} this round.`}
+                ? 'You have learned or cleared every word at this level. Switch levels in Settings, or come back later as your reviews fall due.'
+                : `You have learned ${learned} of ${dailyGoal} words today.`}
             </Text>
           </View>
           <View style={styles.doneActions}>
@@ -110,7 +121,7 @@ export default function StudyScreen() {
               label="Back to home"
               variant={empty ? 'primary' : 'ghost'}
               fullWidth
-              onPress={() => router.back()}
+              onPress={goHome}
             />
           </View>
         </View>
@@ -119,7 +130,8 @@ export default function StudyScreen() {
           <View style={styles.deckArea}>
             <SwipeDeck
               ref={deckRef}
-              words={session}
+              words={queue}
+              resetKey={deckKey}
               nativeLang={nativeLang}
               onSwipe={onSwipe}
               onComplete={() => setDone(true)}

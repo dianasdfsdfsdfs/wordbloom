@@ -34,10 +34,13 @@ export interface SwipeDeckProps {
   onSwipe: (word: Word, direction: SwipeDirection) => void;
   onComplete?: () => void;
   onCardChange?: (word: Word | null) => void;
+  /** Bump to start a fresh deck. Changing `words` alone (e.g. appending a
+   * recycled card mid-session) does NOT reset the position. */
+  resetKey?: string | number;
 }
 
 export const SwipeDeck = forwardRef<SwipeDeckHandle, SwipeDeckProps>(function SwipeDeck(
-  { words, nativeLang, onSwipe, onComplete, onCardChange },
+  { words, nativeLang, onSwipe, onComplete, onCardChange, resetKey },
   ref,
 ) {
   const { colors } = useTheme();
@@ -61,7 +64,9 @@ export const SwipeDeck = forwardRef<SwipeDeckHandle, SwipeDeckProps>(function Sw
     setExiting(null);
     x.value = 0;
     y.value = 0;
-  }, [words, x, y]);
+    // Reset only on an explicit new session, not when the queue grows.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resetKey]);
 
   useEffect(() => {
     if (words.length > 0 && index >= words.length) onComplete?.();
