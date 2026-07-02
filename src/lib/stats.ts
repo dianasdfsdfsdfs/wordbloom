@@ -30,17 +30,11 @@ export function computeStreak(log: ReviewEntry[], now = Date.now()): number {
   return streak;
 }
 
-function newLearnedToday(
-  log: ReviewEntry[],
-  byWord: Record<string, WordProgress>,
-  now = Date.now(),
-): number {
+/** Words that became "learned" (first correct recall after being studied) today. */
+export function learnedTodayCount(byWord: Record<string, WordProgress>, now = Date.now()): number {
   const t0 = dayStart(now);
-  const firstSeen = new Map<string, number>();
-  for (const e of log) if (!firstSeen.has(e.wordId)) firstSeen.set(e.wordId, e.at);
   let count = 0;
-  // Count words first studied today, excluding ones flagged "already known".
-  for (const [id, at] of firstSeen) if (at >= t0 && byWord[id]?.status !== 'known') count++;
+  for (const p of Object.values(byWord)) if (p.learnedAt && p.learnedAt >= t0) count++;
   return count;
 }
 
@@ -77,7 +71,7 @@ export function homeSummary(
   const { due, fresh } = sessionCounts(collectionWords, byWord, now);
   return {
     streak: computeStreak(log, now),
-    learnedToday: newLearnedToday(log, byWord, now),
+    learnedToday: learnedTodayCount(byWord, now),
     reviewsDue: due,
     newAvailable: fresh,
     totalLearned: totalMastered(byWord),

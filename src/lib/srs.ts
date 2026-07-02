@@ -47,7 +47,7 @@ export function schedule(prev: WordProgress, result: ReviewResult, now = Date.no
       seen,
       correct: prev.correct + 1,
       lastReviewedAt: now,
-      learnedAt: status === 'mastered' && !prev.learnedAt ? now : prev.learnedAt,
+      learnedAt: prev.learnedAt ?? now,
     };
   }
 

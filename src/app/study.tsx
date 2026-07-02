@@ -12,6 +12,7 @@ import { Text } from '@/components/ui/text';
 import { spacing } from '@/constants/theme';
 import { getWords } from '@/data/mock-words';
 import { useTheme } from '@/hooks/use-theme';
+import { learnedTodayCount } from '@/lib/stats';
 import { buildSession } from '@/lib/study';
 import { useProgress } from '@/stores/progress';
 import { useSettings } from '@/stores/settings';
@@ -38,10 +39,10 @@ export default function StudyScreen() {
   }, [targetLang, level, dailyGoal, sessionId]);
 
   const deckRef = useRef<SwipeDeckHandle>(null);
-  const [reviewed, setReviewed] = useState(0);
   const [known, setKnown] = useState(0);
   const [done, setDone] = useState(false);
   const [current, setCurrent] = useState<Word | null>(null);
+  const byWord = useProgress((s) => s.byWord);
 
   const speak = () => {
     if (!current) return;
@@ -52,14 +53,12 @@ export default function StudyScreen() {
   const onSwipe = useCallback(
     (word: Word, dir: SwipeDirection) => {
       review(word.id, dir === 'right' ? 'known' : 'unknown');
-      setReviewed((r) => r + 1);
       if (dir === 'right') setKnown((k) => k + 1);
     },
     [review],
   );
 
   const restart = () => {
-    setReviewed(0);
     setKnown(0);
     setDone(false);
     setSessionId((s) => s + 1);
@@ -67,7 +66,8 @@ export default function StudyScreen() {
 
   const total = session.length;
   const empty = total === 0;
-  const progress = total ? reviewed / total : 0;
+  const learned = learnedTodayCount(byWord);
+  const goalPct = dailyGoal > 0 ? Math.min(1, learned / dailyGoal) : 0;
 
   return (
     <Screen edges={['top', 'bottom']}>
@@ -76,10 +76,10 @@ export default function StudyScreen() {
           <Feather name="x" size={26} color={colors.textPrimary} />
         </Pressable>
         <View style={[styles.track, { backgroundColor: colors.surfaceAlt }]}>
-          <View style={[styles.fill, { width: `${(done ? 1 : progress) * 100}%`, backgroundColor: colors.accent }]} />
+          <View style={[styles.fill, { width: `${goalPct * 100}%`, backgroundColor: colors.accent }]} />
         </View>
         <Text variant="small" color="textSecondary" style={styles.counter}>
-          {empty ? '0/0' : `${done ? total : Math.min(reviewed + 1, total)}/${total}`}
+          {learned}/{dailyGoal}
         </Text>
         {!done && !empty ? (
           <Pressable onPress={speak} hitSlop={10} disabled={!current} accessibilityLabel="Listen">

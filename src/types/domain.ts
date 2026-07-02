@@ -49,7 +49,7 @@ export interface WordProgress {
   seen: number;
   correct: number;
   wrong: number;
-  /** Epoch ms when the word first reached "mastered". */
+  /** Epoch ms when the word was first learned (first correct recall after study). */
   learnedAt?: number;
 }
 
