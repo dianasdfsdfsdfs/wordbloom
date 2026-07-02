@@ -62,6 +62,10 @@ Open the project in **Expo Go** (scan the QR code) on your phone, or run it on a
 
 **Then:** local SQLite + SRS engine + real CEFR word lists → accounts & cloud sync.
 
+## 📚 Data & credits
+
+English vocabulary is CEFR-graded using the open **CEFR-J Vocabulary Profile** (A1–B2) and the **Octanove Vocabulary Profile** (C1–C2), both CC BY-SA. Russian translations are generated via the free **MyMemory** translation API (`scripts/build-words.mjs`) and may vary in quality. German words are hand-curated.
+
 ## 📄 License
 
 See [LICENSE](./LICENSE).

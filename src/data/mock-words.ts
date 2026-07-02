@@ -1,10 +1,11 @@
 import type { CEFRLevel, LangCode, Word } from '@/types/domain';
+import { GENERATED_WORDS } from './words.generated';
 
 /**
  * Placeholder vocabulary for building the UI. Real collections are sourced
  * from official CEFR lists in a later phase; these are only for the demo.
  */
-export const MOCK_WORDS: Word[] = [
+const CURATED_WORDS: Word[] = [
   // ── English · A1 ───────────────────────────────────────────────
   { id: 'en-a1-house', lang: 'en', level: 'A1', headword: 'house', pos: 'noun', ipa: '/haʊs/', translations: { ru: 'дом' }, example: 'This house is very old.', exampleTranslation: 'Этот дом очень старый.' },
   { id: 'en-a1-water', lang: 'en', level: 'A1', headword: 'water', pos: 'noun', ipa: '/ˈwɔːtər/', translations: { ru: 'вода' }, example: 'Can I have some water?', exampleTranslation: 'Можно мне воды?' },
@@ -107,6 +108,14 @@ export const MOCK_WORDS: Word[] = [
   { id: 'de-c2-akribisch', lang: 'de', level: 'C2', headword: 'akribisch', pos: 'adjective', translations: { ru: 'дотошный' }, example: 'Akribische Genauigkeit.', exampleTranslation: 'Дотошная точность.' },
   { id: 'de-c2-vergaenglich', lang: 'de', level: 'C2', headword: 'vergänglich', pos: 'adjective', translations: { ru: 'преходящий' }, example: 'Vergängliche Schönheit.', exampleTranslation: 'Преходящая красота.' },
   { id: 'de-c2-stichhaltig', lang: 'de', level: 'C2', headword: 'stichhaltig', pos: 'adjective', translations: { ru: 'убедительный' }, example: 'Ein stichhaltiges Argument.', exampleTranslation: 'Убедительный аргумент.' },
+];
+
+const generatedIds = new Set(GENERATED_WORDS.map((w) => w.id));
+
+/** Generated English (CEFR pipeline) + curated words with examples, deduped by id. */
+export const MOCK_WORDS: Word[] = [
+  ...GENERATED_WORDS,
+  ...CURATED_WORDS.filter((w) => !generatedIds.has(w.id)),
 ];
 
 /** Words for a given collection, optionally shuffled (random, not alphabetical). */

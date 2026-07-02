@@ -41,3 +41,6 @@ example
 # generated native folders
 /ios
 /android
+
+# word-pipeline translation cache
+scripts/translations-cache.json
