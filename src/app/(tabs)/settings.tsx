@@ -10,6 +10,7 @@ import { Text } from '@/components/ui/text';
 import { LANGUAGES, TARGET_LANGUAGES } from '@/constants/languages';
 import { palette, radius, shadows, spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
+import { signOutUser } from '@/stores/auth';
 import { useProgress } from '@/stores/progress';
 import { type ThemePreference, useSettings } from '@/stores/settings';
 import { CEFR_LEVELS } from '@/types/domain';
@@ -203,6 +204,7 @@ export default function SettingsScreen() {
               fullWidth
               onPress={() => {
                 tap();
+                void signOutUser();
                 useProgress.getState().resetProgress();
                 resetAll();
               }}

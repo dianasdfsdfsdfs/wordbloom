@@ -17,6 +17,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { themes } from '@/constants/theme';
 import { useResolvedScheme } from '@/hooks/use-theme';
+import { startCloudSync } from '@/lib/sync';
 import { useHydrated, useSettings } from '@/stores/settings';
 
 SplashScreen.preventAutoHideAsync();
@@ -41,6 +42,10 @@ export default function RootLayout() {
   useEffect(() => {
     if (ready) SplashScreen.hideAsync();
   }, [ready]);
+
+  useEffect(() => {
+    startCloudSync();
+  }, []);
 
   if (!ready) return null;
 
