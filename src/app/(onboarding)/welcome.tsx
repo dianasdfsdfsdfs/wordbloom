@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 
-import { Bloom } from '@/components/bloom';
+import { Bloom3D } from '@/components/bloom-3d';
 import { Button } from '@/components/ui/button';
 import { Screen } from '@/components/ui/screen';
 import { Text } from '@/components/ui/text';
@@ -13,7 +13,7 @@ export default function Welcome() {
   return (
     <Screen edges={['top', 'bottom']} style={styles.screen}>
       <View style={styles.hero}>
-        <Bloom size={176} />
+        <Bloom3D size={190} />
         <View style={styles.copy}>
           <Text variant="overline" color="brand" center>
             Learn · Bloom · Remember

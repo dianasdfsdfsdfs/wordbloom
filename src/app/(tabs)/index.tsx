@@ -4,7 +4,7 @@ import { useRouter } from 'expo-router';
 import { useMemo } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
-import { Bloom } from '@/components/bloom';
+import { Bloom3D } from '@/components/bloom-3d';
 import { Screen } from '@/components/ui/screen';
 import { Surface } from '@/components/ui/surface';
 import { Text } from '@/components/ui/text';
@@ -89,7 +89,7 @@ export default function HomeScreen() {
                 : `${dailyGoal - summary.learnedToday} words to your goal`}
             </Text>
           </View>
-          <Bloom size={110} />
+          <Bloom3D size={124} />
         </LinearGradient>
 
         <Pressable
