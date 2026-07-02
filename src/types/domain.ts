@@ -36,7 +36,7 @@ export interface Word {
   exampleTranslation?: string;
 }
 
-export type SrsStatus = 'new' | 'learning' | 'review' | 'mastered';
+export type SrsStatus = 'new' | 'learning' | 'review' | 'mastered' | 'known';
 
 export interface WordProgress {
   wordId: string;

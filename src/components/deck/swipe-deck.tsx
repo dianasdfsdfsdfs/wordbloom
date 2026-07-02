@@ -33,10 +33,11 @@ export interface SwipeDeckProps {
   nativeLang: LangCode;
   onSwipe: (word: Word, direction: SwipeDirection) => void;
   onComplete?: () => void;
+  onCardChange?: (word: Word | null) => void;
 }
 
 export const SwipeDeck = forwardRef<SwipeDeckHandle, SwipeDeckProps>(function SwipeDeck(
-  { words, nativeLang, onSwipe, onComplete },
+  { words, nativeLang, onSwipe, onComplete, onCardChange },
   ref,
 ) {
   const { colors } = useTheme();
@@ -65,6 +66,10 @@ export const SwipeDeck = forwardRef<SwipeDeckHandle, SwipeDeckProps>(function Sw
   useEffect(() => {
     if (words.length > 0 && index >= words.length) onComplete?.();
   }, [index, words.length, onComplete]);
+
+  useEffect(() => {
+    onCardChange?.(words[index] ?? null);
+  }, [index, words, onCardChange]);
 
   const clearExiting = useCallback(() => setExiting(null), []);
   const toggleFlip = useCallback(() => setFlipped((f) => !f), []);

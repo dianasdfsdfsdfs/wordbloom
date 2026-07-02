@@ -24,6 +24,19 @@ export function schedule(prev: WordProgress, result: ReviewResult, now = Date.no
   const seen = prev.seen + 1;
 
   if (result === 'known') {
+    // First-ever encounter swiped "known" → the user already knows this word:
+    // archive it so it never returns and never counts as newly learned.
+    if (prev.status === 'new') {
+      return {
+        ...prev,
+        status: 'known',
+        stage: SRS_LADDER.length,
+        dueAt: Number.MAX_SAFE_INTEGER,
+        seen,
+        correct: prev.correct + 1,
+        lastReviewedAt: now,
+      };
+    }
     const stage = Math.min(prev.stage + 1, SRS_LADDER.length - 1);
     const status: SrsStatus = stage >= MASTER_STAGE ? 'mastered' : 'review';
     return {

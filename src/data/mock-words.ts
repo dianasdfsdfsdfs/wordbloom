@@ -108,6 +108,80 @@ const CURATED_WORDS: Word[] = [
   { id: 'de-c2-akribisch', lang: 'de', level: 'C2', headword: 'akribisch', pos: 'adjective', translations: { ru: 'дотошный' }, example: 'Akribische Genauigkeit.', exampleTranslation: 'Дотошная точность.' },
   { id: 'de-c2-vergaenglich', lang: 'de', level: 'C2', headword: 'vergänglich', pos: 'adjective', translations: { ru: 'преходящий' }, example: 'Vergängliche Schönheit.', exampleTranslation: 'Преходящая красота.' },
   { id: 'de-c2-stichhaltig', lang: 'de', level: 'C2', headword: 'stichhaltig', pos: 'adjective', translations: { ru: 'убедительный' }, example: 'Ein stichhaltiges Argument.', exampleTranslation: 'Убедительный аргумент.' },
+
+  // ── German · A1 (more) ─────────────────────────────────────────
+  { id: 'de-a1-mann', lang: 'de', level: 'A1', headword: 'Mann', article: 'der', pos: 'noun', translations: { ru: 'мужчина' }, example: 'Der Mann ist groß.', exampleTranslation: 'Мужчина высокий.' },
+  { id: 'de-a1-frau', lang: 'de', level: 'A1', headword: 'Frau', article: 'die', pos: 'noun', translations: { ru: 'женщина' }, example: 'Die Frau liest ein Buch.', exampleTranslation: 'Женщина читает книгу.' },
+  { id: 'de-a1-kind', lang: 'de', level: 'A1', headword: 'Kind', article: 'das', pos: 'noun', translations: { ru: 'ребёнок' }, example: 'Das Kind spielt draußen.', exampleTranslation: 'Ребёнок играет на улице.' },
+  { id: 'de-a1-trinken', lang: 'de', level: 'A1', headword: 'trinken', pos: 'verb', translations: { ru: 'пить' }, example: 'Ich trinke Kaffee.', exampleTranslation: 'Я пью кофе.' },
+  { id: 'de-a1-gut', lang: 'de', level: 'A1', headword: 'gut', pos: 'adjective', translations: { ru: 'хороший' }, example: 'Das Essen ist gut.', exampleTranslation: 'Еда хорошая.' },
+  { id: 'de-a1-heute', lang: 'de', level: 'A1', headword: 'heute', pos: 'adverb', translations: { ru: 'сегодня' }, example: 'Heute ist Montag.', exampleTranslation: 'Сегодня понедельник.' },
+
+  // ── German · A2 (more) ─────────────────────────────────────────
+  { id: 'de-a2-familie', lang: 'de', level: 'A2', headword: 'Familie', article: 'die', pos: 'noun', translations: { ru: 'семья' }, example: 'Meine Familie ist groß.', exampleTranslation: 'Моя семья большая.' },
+  { id: 'de-a2-problem', lang: 'de', level: 'A2', headword: 'Problem', article: 'das', pos: 'noun', translations: { ru: 'проблема' }, example: 'Das ist kein Problem.', exampleTranslation: 'Это не проблема.' },
+  { id: 'de-a2-stadt', lang: 'de', level: 'A2', headword: 'Stadt', article: 'die', pos: 'noun', translations: { ru: 'город' }, example: 'Berlin ist eine große Stadt.', exampleTranslation: 'Берлин — большой город.' },
+  { id: 'de-a2-land', lang: 'de', level: 'A2', headword: 'Land', article: 'das', pos: 'noun', translations: { ru: 'страна' }, example: 'Deutschland ist ein schönes Land.', exampleTranslation: 'Германия — красивая страна.' },
+  { id: 'de-a2-kaufen', lang: 'de', level: 'A2', headword: 'kaufen', pos: 'verb', translations: { ru: 'покупать' }, example: 'Ich kaufe Brot.', exampleTranslation: 'Я покупаю хлеб.' },
+  { id: 'de-a2-reise', lang: 'de', level: 'A2', headword: 'Reise', article: 'die', pos: 'noun', translations: { ru: 'поездка' }, example: 'Die Reise war schön.', exampleTranslation: 'Поездка была прекрасной.' },
+  { id: 'de-a2-gestern', lang: 'de', level: 'A2', headword: 'gestern', pos: 'adverb', translations: { ru: 'вчера' }, example: 'Gestern hat es geregnet.', exampleTranslation: 'Вчера шёл дождь.' },
+  { id: 'de-a2-morgen', lang: 'de', level: 'A2', headword: 'morgen', pos: 'adverb', translations: { ru: 'завтра' }, example: 'Morgen arbeite ich.', exampleTranslation: 'Завтра я работаю.' },
+  { id: 'de-a2-woche', lang: 'de', level: 'A2', headword: 'Woche', article: 'die', pos: 'noun', translations: { ru: 'неделя' }, example: 'Die Woche war lang.', exampleTranslation: 'Неделя была длинной.' },
+  { id: 'de-a2-schule', lang: 'de', level: 'A2', headword: 'Schule', article: 'die', pos: 'noun', translations: { ru: 'школа' }, example: 'Die Kinder gehen zur Schule.', exampleTranslation: 'Дети идут в школу.' },
+  { id: 'de-a2-zug', lang: 'de', level: 'A2', headword: 'Zug', article: 'der', pos: 'noun', translations: { ru: 'поезд' }, example: 'Der Zug ist spät.', exampleTranslation: 'Поезд опаздывает.' },
+
+  // ── German · B1 (more) ─────────────────────────────────────────
+  { id: 'de-b1-gesundheit', lang: 'de', level: 'B1', headword: 'Gesundheit', article: 'die', pos: 'noun', translations: { ru: 'здоровье' }, example: 'Gesundheit ist wichtig.', exampleTranslation: 'Здоровье важно.' },
+  { id: 'de-b1-regierung', lang: 'de', level: 'B1', headword: 'Regierung', article: 'die', pos: 'noun', translations: { ru: 'правительство' }, example: 'Die Regierung entscheidet.', exampleTranslation: 'Правительство принимает решение.' },
+  { id: 'de-b1-entwickeln', lang: 'de', level: 'B1', headword: 'entwickeln', pos: 'verb', translations: { ru: 'развивать' }, example: 'Wir entwickeln eine App.', exampleTranslation: 'Мы разрабатываем приложение.' },
+  { id: 'de-b1-gesellschaft', lang: 'de', level: 'B1', headword: 'Gesellschaft', article: 'die', pos: 'noun', translations: { ru: 'общество' }, example: 'Die Gesellschaft verändert sich.', exampleTranslation: 'Общество меняется.' },
+  { id: 'de-b1-vorteil', lang: 'de', level: 'B1', headword: 'Vorteil', article: 'der', pos: 'noun', translations: { ru: 'преимущество' }, example: 'Das hat viele Vorteile.', exampleTranslation: 'У этого много преимуществ.' },
+  { id: 'de-b1-nachteil', lang: 'de', level: 'B1', headword: 'Nachteil', article: 'der', pos: 'noun', translations: { ru: 'недостаток' }, example: 'Es gibt auch Nachteile.', exampleTranslation: 'Есть и недостатки.' },
+  { id: 'de-b1-entscheidung', lang: 'de', level: 'B1', headword: 'Entscheidung', article: 'die', pos: 'noun', translations: { ru: 'решение' }, example: 'Das ist eine schwere Entscheidung.', exampleTranslation: 'Это трудное решение.' },
+  { id: 'de-b1-meinung', lang: 'de', level: 'B1', headword: 'Meinung', article: 'die', pos: 'noun', translations: { ru: 'мнение' }, example: 'Meiner Meinung nach ist das falsch.', exampleTranslation: 'По-моему, это неверно.' },
+  { id: 'de-b1-vergleichen', lang: 'de', level: 'B1', headword: 'vergleichen', pos: 'verb', translations: { ru: 'сравнивать' }, example: 'Vergleiche die Preise.', exampleTranslation: 'Сравни цены.' },
+  { id: 'de-b1-einfluss', lang: 'de', level: 'B1', headword: 'Einfluss', article: 'der', pos: 'noun', translations: { ru: 'влияние' }, example: 'Er hat großen Einfluss.', exampleTranslation: 'У него большое влияние.' },
+  { id: 'de-b1-beschreiben', lang: 'de', level: 'B1', headword: 'beschreiben', pos: 'verb', translations: { ru: 'описывать' }, example: 'Beschreibe das Bild.', exampleTranslation: 'Опиши картину.' },
+
+  // ── German · B2 (more) ─────────────────────────────────────────
+  { id: 'de-b2-herausforderung', lang: 'de', level: 'B2', headword: 'Herausforderung', article: 'die', pos: 'noun', translations: { ru: 'вызов' }, example: 'Das ist eine große Herausforderung.', exampleTranslation: 'Это большой вызов.' },
+  { id: 'de-b2-nachhaltig', lang: 'de', level: 'B2', headword: 'nachhaltig', pos: 'adjective', translations: { ru: 'устойчивый' }, example: 'Eine nachhaltige Entwicklung.', exampleTranslation: 'Устойчивое развитие.' },
+  { id: 'de-b2-beruecksichtigen', lang: 'de', level: 'B2', headword: 'berücksichtigen', pos: 'verb', translations: { ru: 'учитывать' }, example: 'Wir müssen das berücksichtigen.', exampleTranslation: 'Мы должны это учесть.' },
+  { id: 'de-b2-auswirkung', lang: 'de', level: 'B2', headword: 'Auswirkung', article: 'die', pos: 'noun', translations: { ru: 'воздействие' }, example: 'Die Auswirkungen sind groß.', exampleTranslation: 'Последствия велики.' },
+  { id: 'de-b2-verfuegbar', lang: 'de', level: 'B2', headword: 'verfügbar', pos: 'adjective', translations: { ru: 'доступный' }, example: 'Das Produkt ist verfügbar.', exampleTranslation: 'Продукт доступен.' },
+  { id: 'de-b2-faehigkeit', lang: 'de', level: 'B2', headword: 'Fähigkeit', article: 'die', pos: 'noun', translations: { ru: 'способность' }, example: 'Sie hat besondere Fähigkeiten.', exampleTranslation: 'У неё особые способности.' },
+  { id: 'de-b2-vielfalt', lang: 'de', level: 'B2', headword: 'Vielfalt', article: 'die', pos: 'noun', translations: { ru: 'разнообразие' }, example: 'Die Vielfalt ist groß.', exampleTranslation: 'Разнообразие велико.' },
+  { id: 'de-b2-gewaehrleisten', lang: 'de', level: 'B2', headword: 'gewährleisten', pos: 'verb', translations: { ru: 'обеспечивать' }, example: 'Wir gewährleisten Qualität.', exampleTranslation: 'Мы обеспечиваем качество.' },
+  { id: 'de-b2-voraussetzung', lang: 'de', level: 'B2', headword: 'Voraussetzung', article: 'die', pos: 'noun', translations: { ru: 'предпосылка' }, example: 'Das ist eine wichtige Voraussetzung.', exampleTranslation: 'Это важная предпосылка.' },
+  { id: 'de-b2-zustaendig', lang: 'de', level: 'B2', headword: 'zuständig', pos: 'adjective', translations: { ru: 'ответственный' }, example: 'Wer ist dafür zuständig?', exampleTranslation: 'Кто за это отвечает?' },
+  { id: 'de-b2-umfang', lang: 'de', level: 'B2', headword: 'Umfang', article: 'der', pos: 'noun', translations: { ru: 'объём' }, example: 'Der Umfang der Arbeit ist groß.', exampleTranslation: 'Объём работы большой.' },
+
+  // ── German · C1 (more) ─────────────────────────────────────────
+  { id: 'de-c1-hervorheben', lang: 'de', level: 'C1', headword: 'hervorheben', pos: 'verb', translations: { ru: 'подчёркивать' }, example: 'Ich möchte das hervorheben.', exampleTranslation: 'Я хочу это подчеркнуть.' },
+  { id: 'de-c1-wahrnehmung', lang: 'de', level: 'C1', headword: 'Wahrnehmung', article: 'die', pos: 'noun', translations: { ru: 'восприятие' }, example: 'Die Wahrnehmung ist subjektiv.', exampleTranslation: 'Восприятие субъективно.' },
+  { id: 'de-c1-aspekt', lang: 'de', level: 'C1', headword: 'Aspekt', article: 'der', pos: 'noun', translations: { ru: 'аспект' }, example: 'Das ist ein wichtiger Aspekt.', exampleTranslation: 'Это важный аспект.' },
+  { id: 'de-c1-bewaeltigen', lang: 'de', level: 'C1', headword: 'bewältigen', pos: 'verb', translations: { ru: 'справляться' }, example: 'Er kann die Aufgabe bewältigen.', exampleTranslation: 'Он может справиться с задачей.' },
+  { id: 'de-c1-grundlage', lang: 'de', level: 'C1', headword: 'Grundlage', article: 'die', pos: 'noun', translations: { ru: 'основа' }, example: 'Das ist die Grundlage der Theorie.', exampleTranslation: 'Это основа теории.' },
+  { id: 'de-c1-rueckgang', lang: 'de', level: 'C1', headword: 'Rückgang', article: 'der', pos: 'noun', translations: { ru: 'спад' }, example: 'Ein Rückgang der Zahlen.', exampleTranslation: 'Спад показателей.' },
+  { id: 'de-c1-massgeblich', lang: 'de', level: 'C1', headword: 'maßgeblich', pos: 'adjective', translations: { ru: 'существенный' }, example: 'Ein maßgeblicher Faktor.', exampleTranslation: 'Существенный фактор.' },
+  { id: 'de-c1-ausschliesslich', lang: 'de', level: 'C1', headword: 'ausschließlich', pos: 'adverb', translations: { ru: 'исключительно' }, example: 'Ausschließlich für Mitglieder.', exampleTranslation: 'Исключительно для членов.' },
+  { id: 'de-c1-verdeutlichen', lang: 'de', level: 'C1', headword: 'verdeutlichen', pos: 'verb', translations: { ru: 'прояснять' }, example: 'Das verdeutlicht das Problem.', exampleTranslation: 'Это проясняет проблему.' },
+  { id: 'de-c1-zusammenhang', lang: 'de', level: 'C1', headword: 'Zusammenhang', article: 'der', pos: 'noun', translations: { ru: 'связь' }, example: 'Ich sehe keinen Zusammenhang.', exampleTranslation: 'Я не вижу связи.' },
+  { id: 'de-c1-erheblich', lang: 'de', level: 'C1', headword: 'erheblich', pos: 'adjective', translations: { ru: 'значительный' }, example: 'Ein erheblicher Unterschied.', exampleTranslation: 'Значительная разница.' },
+
+  // ── German · C2 (more) ─────────────────────────────────────────
+  { id: 'de-c2-unabdingbar', lang: 'de', level: 'C2', headword: 'unabdingbar', pos: 'adjective', translations: { ru: 'непременный' }, example: 'Eine unabdingbare Voraussetzung.', exampleTranslation: 'Непременное условие.' },
+  { id: 'de-c2-diskrepanz', lang: 'de', level: 'C2', headword: 'Diskrepanz', article: 'die', pos: 'noun', translations: { ru: 'расхождение' }, example: 'Eine Diskrepanz zwischen Wort und Tat.', exampleTranslation: 'Расхождение между словом и делом.' },
+  { id: 'de-c2-konsequent', lang: 'de', level: 'C2', headword: 'konsequent', pos: 'adjective', translations: { ru: 'последовательный' }, example: 'Konsequentes Handeln.', exampleTranslation: 'Последовательные действия.' },
+  { id: 'de-c2-tragweite', lang: 'de', level: 'C2', headword: 'Tragweite', article: 'die', pos: 'noun', translations: { ru: 'масштаб' }, example: 'Die Tragweite der Entscheidung.', exampleTranslation: 'Масштаб решения.' },
+  { id: 'de-c2-zwangslaeufig', lang: 'de', level: 'C2', headword: 'zwangsläufig', pos: 'adverb', translations: { ru: 'неизбежно' }, example: 'Das führt zwangsläufig zu Problemen.', exampleTranslation: 'Это неизбежно ведёт к проблемам.' },
+  { id: 'de-c2-differenziert', lang: 'de', level: 'C2', headword: 'differenziert', pos: 'adjective', translations: { ru: 'дифференцированный' }, example: 'Eine differenzierte Betrachtung.', exampleTranslation: 'Дифференцированный взгляд.' },
+  { id: 'de-c2-inhaerent', lang: 'de', level: 'C2', headword: 'inhärent', pos: 'adjective', translations: { ru: 'присущий' }, example: 'Ein inhärentes Risiko.', exampleTranslation: 'Присущий риск.' },
+  { id: 'de-c2-zaesur', lang: 'de', level: 'C2', headword: 'Zäsur', article: 'die', pos: 'noun', translations: { ru: 'перелом' }, example: 'Eine historische Zäsur.', exampleTranslation: 'Исторический перелом.' },
+  { id: 'de-c2-beilaeufig', lang: 'de', level: 'C2', headword: 'beiläufig', pos: 'adjective', translations: { ru: 'мимолётный' }, example: 'Eine beiläufige Bemerkung.', exampleTranslation: 'Мимолётное замечание.' },
+  { id: 'de-c2-ambivalenz', lang: 'de', level: 'C2', headword: 'Ambivalenz', article: 'die', pos: 'noun', translations: { ru: 'амбивалентность' }, example: 'Eine gewisse Ambivalenz.', exampleTranslation: 'Определённая амбивалентность.' },
+  { id: 'de-c2-sachverhalt', lang: 'de', level: 'C2', headword: 'Sachverhalt', article: 'der', pos: 'noun', translations: { ru: 'суть дела' }, example: 'Den Sachverhalt klären.', exampleTranslation: 'Прояснить суть дела.' },
+  { id: 'de-c2-vermeintlich', lang: 'de', level: 'C2', headword: 'vermeintlich', pos: 'adjective', translations: { ru: 'мнимый' }, example: 'Ein vermeintlicher Vorteil.', exampleTranslation: 'Мнимое преимущество.' },
 ];
 
 const generatedIds = new Set(GENERATED_WORDS.map((w) => w.id));

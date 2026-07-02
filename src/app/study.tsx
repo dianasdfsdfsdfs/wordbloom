@@ -1,4 +1,5 @@
 import { Feather } from '@expo/vector-icons';
+import * as Speech from 'expo-speech';
 import { useRouter } from 'expo-router';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
@@ -15,6 +16,8 @@ import { buildSession } from '@/lib/study';
 import { useProgress } from '@/stores/progress';
 import { useSettings } from '@/stores/settings';
 import type { Word } from '@/types/domain';
+
+const LANG_TAG: Record<string, string> = { en: 'en-US', de: 'de-DE', ru: 'ru-RU' };
 
 export default function StudyScreen() {
   const router = useRouter();
@@ -38,6 +41,13 @@ export default function StudyScreen() {
   const [reviewed, setReviewed] = useState(0);
   const [known, setKnown] = useState(0);
   const [done, setDone] = useState(false);
+  const [current, setCurrent] = useState<Word | null>(null);
+
+  const speak = () => {
+    if (!current) return;
+    Speech.stop();
+    Speech.speak(current.headword, { language: LANG_TAG[current.lang] ?? current.lang, rate: 0.95 });
+  };
 
   const onSwipe = useCallback(
     (word: Word, dir: SwipeDirection) => {
@@ -71,6 +81,11 @@ export default function StudyScreen() {
         <Text variant="small" color="textSecondary" style={styles.counter}>
           {empty ? '0/0' : `${done ? total : Math.min(reviewed + 1, total)}/${total}`}
         </Text>
+        {!done && !empty ? (
+          <Pressable onPress={speak} hitSlop={10} disabled={!current} accessibilityLabel="Listen">
+            <Feather name="volume-2" size={22} color={current ? colors.textPrimary : colors.textMuted} />
+          </Pressable>
+        ) : null}
       </View>
 
       {done || empty ? (
@@ -108,6 +123,7 @@ export default function StudyScreen() {
               nativeLang={nativeLang}
               onSwipe={onSwipe}
               onComplete={() => setDone(true)}
+              onCardChange={setCurrent}
             />
           </View>
 
