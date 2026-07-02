@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, {
   interpolate,
@@ -8,7 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { Text } from '@/components/ui/text';
-import { radius, shadows, spacing } from '@/constants/theme';
+import { fonts, radius, shadows, spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import type { LangCode, PartOfSpeech, Word } from '@/types/domain';
 
@@ -24,6 +24,9 @@ const POS_LABEL: Record<PartOfSpeech, string> = {
   other: 'word',
 };
 
+const MAX_HEAD = 40;
+const MIN_HEAD = 16;
+
 export interface FlashcardProps {
   word: Word;
   nativeLang: LangCode;
@@ -33,6 +36,7 @@ export interface FlashcardProps {
 export function Flashcard({ word, nativeLang, flipped = false }: FlashcardProps) {
   const { colors } = useTheme();
   const p = useSharedValue(flipped ? 1 : 0);
+  const [headW, setHeadW] = useState(0);
 
   useEffect(() => {
     p.value = withTiming(flipped ? 1 : 0, { duration: 420 });
@@ -47,8 +51,12 @@ export function Flashcard({ word, nativeLang, flipped = false }: FlashcardProps)
     opacity: p.value > 0.5 ? 1 : 0,
   }));
 
-  const translation =
-    word.translations[nativeLang] ?? Object.values(word.translations)[0] ?? '—';
+  const translation = word.translations[nativeLang] ?? Object.values(word.translations)[0] ?? '—';
+
+  // Size the headword to always fit on one line (no ellipsis), based on the
+  // measured card width and the word length.
+  const headLen = Math.max(word.headword.length, 1);
+  const headFont = headW > 0 ? Math.max(MIN_HEAD, Math.min(MAX_HEAD, (headW - 4) / (headLen * 0.66))) : 30;
 
   return (
     <View style={styles.wrap}>
@@ -67,19 +75,16 @@ export function Flashcard({ word, nativeLang, flipped = false }: FlashcardProps)
           </View>
         </View>
 
-        <View style={styles.center}>
+        <View style={styles.center} onLayout={(e) => setHeadW(e.nativeEvent.layout.width)}>
           {word.article ? (
             <Text variant="titleM" color="textMuted">
               {word.article}
             </Text>
           ) : null}
           <Text
-            variant="heroWord"
             center
-            adjustsFontSizeToFit
             numberOfLines={1}
-            minimumFontScale={0.3}
-            style={{ alignSelf: 'stretch', fontSize: 40 }}>
+            style={{ fontFamily: fonts.display.bold, fontSize: headFont, lineHeight: headFont * 1.14, letterSpacing: -0.5 }}>
             {word.headword}
           </Text>
           {word.ipa ? (
@@ -133,7 +138,7 @@ const styles = StyleSheet.create({
   },
   topRow: { flexDirection: 'row', justifyContent: 'space-between' },
   chip: { paddingHorizontal: spacing.md, paddingVertical: 6, borderRadius: radius.pill },
-  center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 4 },
+  center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 4, alignSelf: 'stretch' },
   ipa: { marginTop: spacing.sm },
   example: { padding: spacing.lg, borderRadius: radius.md, borderLeftWidth: 3, gap: 2 },
   exampleTr: { marginTop: 4 },
