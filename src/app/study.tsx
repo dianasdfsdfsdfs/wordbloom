@@ -11,6 +11,8 @@ import { Text } from '@/components/ui/text';
 import { spacing } from '@/constants/theme';
 import { getWords } from '@/data/mock-words';
 import { useTheme } from '@/hooks/use-theme';
+import { buildSession } from '@/lib/study';
+import { useProgress } from '@/stores/progress';
 import { useSettings } from '@/stores/settings';
 import type { Word } from '@/types/domain';
 
@@ -20,31 +22,41 @@ export default function StudyScreen() {
   const targetLang = useSettings((s) => s.targetLang);
   const nativeLang = useSettings((s) => s.nativeLang);
   const level = useSettings((s) => s.level);
+  const dailyGoal = useSettings((s) => s.dailyGoal);
+  const review = useProgress((s) => s.review);
 
-  const [session, setSession] = useState(0);
-  const words = useMemo(() => {
-    const picked = getWords(targetLang, level, true);
-    return picked.length > 0 ? picked : getWords(targetLang, 'A1', true);
-  }, [targetLang, level, session]);
+  const [sessionId, setSessionId] = useState(0);
+  const session = useMemo(() => {
+    const pool = getWords(targetLang, level, false);
+    const words = pool.length > 0 ? pool : getWords(targetLang, 'A1', false);
+    return buildSession(words, useProgress.getState().byWord, dailyGoal);
+    // rebuild only on level/lang/goal change or restart — not on every review
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [targetLang, level, dailyGoal, sessionId]);
 
   const deckRef = useRef<SwipeDeckHandle>(null);
   const [reviewed, setReviewed] = useState(0);
   const [known, setKnown] = useState(0);
   const [done, setDone] = useState(false);
 
-  const onSwipe = useCallback((_word: Word, dir: SwipeDirection) => {
-    setReviewed((r) => r + 1);
-    if (dir === 'right') setKnown((k) => k + 1);
-  }, []);
+  const onSwipe = useCallback(
+    (word: Word, dir: SwipeDirection) => {
+      review(word.id, dir === 'right' ? 'known' : 'unknown');
+      setReviewed((r) => r + 1);
+      if (dir === 'right') setKnown((k) => k + 1);
+    },
+    [review],
+  );
 
   const restart = () => {
     setReviewed(0);
     setKnown(0);
     setDone(false);
-    setSession((s) => s + 1);
+    setSessionId((s) => s + 1);
   };
 
-  const total = words.length;
+  const total = session.length;
+  const empty = total === 0;
   const progress = total ? reviewed / total : 0;
 
   return (
@@ -54,32 +66,37 @@ export default function StudyScreen() {
           <Feather name="x" size={26} color={colors.textPrimary} />
         </Pressable>
         <View style={[styles.track, { backgroundColor: colors.surfaceAlt }]}>
-          <View
-            style={[styles.fill, { width: `${(done ? 1 : progress) * 100}%`, backgroundColor: colors.accent }]}
-          />
+          <View style={[styles.fill, { width: `${(done ? 1 : progress) * 100}%`, backgroundColor: colors.accent }]} />
         </View>
         <Text variant="small" color="textSecondary" style={styles.counter}>
-          {done ? total : Math.min(reviewed + 1, total)}/{total}
+          {empty ? '0/0' : `${done ? total : Math.min(reviewed + 1, total)}/${total}`}
         </Text>
       </View>
 
-      {done ? (
+      {done || empty ? (
         <View style={styles.done}>
-          <Bloom size={168} progress={total ? known / total : 0} />
+          <Bloom size={168} />
           <View style={styles.doneCopy}>
             <Text variant="overline" color="accent" center>
-              Session complete
+              {empty ? 'All caught up' : 'Session complete'}
             </Text>
             <Text variant="displayM" center>
-              Nicely done
+              {empty ? 'Nothing due right now' : 'Nicely done'}
             </Text>
             <Text variant="body" color="textSecondary" center>
-              You knew {known} of {total} {total === 1 ? 'word' : 'words'} this round.
+              {empty
+                ? 'No cards are due and there are no new words queued. Come back a little later — your reviews will be waiting.'
+                : `You knew ${known} of ${total} ${total === 1 ? 'word' : 'words'} this round.`}
             </Text>
           </View>
           <View style={styles.doneActions}>
-            <Button label="Study again" fullWidth onPress={restart} />
-            <Button label="Back to home" variant="ghost" fullWidth onPress={() => router.back()} />
+            {!empty ? <Button label="Study again" fullWidth onPress={restart} /> : null}
+            <Button
+              label="Back to home"
+              variant={empty ? 'primary' : 'ghost'}
+              fullWidth
+              onPress={() => router.back()}
+            />
           </View>
         </View>
       ) : (
@@ -87,7 +104,7 @@ export default function StudyScreen() {
           <View style={styles.deckArea}>
             <SwipeDeck
               ref={deckRef}
-              words={words}
+              words={session}
               nativeLang={nativeLang}
               onSwipe={onSwipe}
               onComplete={() => setDone(true)}
@@ -126,13 +143,7 @@ const styles = StyleSheet.create({
   fill: { height: '100%', borderRadius: 999 },
   counter: { minWidth: 46, textAlign: 'right' },
   deckArea: { flex: 1, paddingVertical: spacing.lg },
-  actions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: spacing.xl,
-    paddingTop: spacing.md,
-  },
+  actions: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: spacing.xl, paddingTop: spacing.md },
   action: { width: 60, height: 60, borderRadius: 999, borderWidth: 2, alignItems: 'center', justifyContent: 'center' },
   actionBig: { width: 76, height: 76, borderRadius: 999, alignItems: 'center', justifyContent: 'center' },
   hintText: { paddingTop: spacing.md, paddingBottom: spacing.sm },
