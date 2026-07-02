@@ -44,3 +44,5 @@ example
 
 # word-pipeline translation cache
 scripts/translations-cache.json
+
+scripts/examples-cache.json

@@ -86,6 +86,35 @@ function shuffle(a) {
 const cache = existsSync(CACHE_PATH) ? JSON.parse(readFileSync(CACHE_PATH, 'utf8')) : {};
 const saveCache = () => writeFileSync(CACHE_PATH, JSON.stringify(cache));
 
+const EX_CACHE_PATH = new URL('./examples-cache.json', import.meta.url);
+const exCache = existsSync(EX_CACHE_PATH) ? JSON.parse(readFileSync(EX_CACHE_PATH, 'utf8')) : {};
+const saveExCache = () => writeFileSync(EX_CACHE_PATH, JSON.stringify(exCache));
+
+// A short, natural example sentence (with its Russian translation) from Tatoeba.
+async function fetchExample(word) {
+  if (exCache[word] !== undefined) return exCache[word];
+  const url = `https://tatoeba.org/en/api_v0/search?from=eng&to=rus&query=${encodeURIComponent(word)}&sort=relevance&limit=8`;
+  const re = new RegExp(`\\b${word.replace(/[^a-zA-Z]/g, '')}`, 'i');
+  let picked = null;
+  try {
+    const j = await (await fetch(url)).json();
+    for (const s of j.results || []) {
+      const en = String(s.text || '').trim();
+      const tr = (s.translations || []).flat().find((t) => t && t.lang === 'rus');
+      const ru = tr ? String(tr.text || '').trim() : '';
+      if (!en || !ru || en.length < 8 || en.length > 64) continue;
+      if (!re.test(en) || !/[а-яё]/i.test(ru)) continue;
+      picked = { en, ru };
+      break;
+    }
+  } catch {
+    /* ignore network/parse errors */
+  }
+  if (picked) exCache[word] = picked;
+  await sleep(350);
+  return picked;
+}
+
 async function translate(word) {
   if (cache[word] !== undefined) return cache[word];
   const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(word)}&langpair=en|ru&de=${encodeURIComponent(EMAIL)}`;
@@ -137,24 +166,32 @@ async function main() {
     const ru = await translate(r.headword);
     done++;
     if (done % 25 === 0) {
-      console.log(`translated ${done}/${selected.length} (skipped ${skipped})`);
+      console.log(`processed ${done}/${selected.length} (skipped ${skipped})`);
       saveCache();
+      saveExCache();
     }
     const ru2 = ru ? clean(ru) : '';
     if (!isGood(ru2)) {
       skipped++;
       continue;
     }
-    words.push({
+    const word = {
       id: `en-${r.cefr.toLowerCase()}-${slug(r.headword)}`,
       lang: 'en',
       level: r.cefr,
       headword: r.headword,
       pos: mapPos(r.pos),
       translations: { ru: ru2 },
-    });
+    };
+    const ex = await fetchExample(r.headword);
+    if (ex) {
+      word.example = ex.en;
+      word.exampleTranslation = ex.ru;
+    }
+    words.push(word);
   }
   saveCache();
+  saveExCache();
 
   const body = words.map((w) => '  ' + JSON.stringify(w)).join(',\n');
   const out =
