@@ -6,9 +6,9 @@ import { Screen } from '@/components/ui/screen';
 import { Surface } from '@/components/ui/surface';
 import { Text } from '@/components/ui/text';
 import { radius, spacing } from '@/constants/theme';
-import { getStats } from '@/data/mock-progress';
+import { statsData } from '@/lib/stats';
 import { useTheme } from '@/hooks/use-theme';
-import { useSettings } from '@/stores/settings';
+import { useProgress } from '@/stores/progress';
 
 const CHART_W = Dimensions.get('window').width - spacing.xl * 2 - spacing.lg * 2;
 
@@ -31,9 +31,9 @@ function Tile({ value, label }: { value: string; label: string }) {
 
 export default function StatsScreen() {
   const { colors } = useTheme();
-  const targetLang = useSettings((s) => s.targetLang);
-  const level = useSettings((s) => s.level);
-  const stats = useMemo(() => getStats(targetLang, level), [targetLang, level]);
+  const byWord = useProgress((s) => s.byWord);
+  const log = useProgress((s) => s.log);
+  const stats = useMemo(() => statsData(byWord, log), [byWord, log]);
   const maxWeek = Math.max(...stats.week.map((w) => w.count), 1);
 
   return (

@@ -10,8 +10,10 @@ import { Surface } from '@/components/ui/surface';
 import { Text } from '@/components/ui/text';
 import { LANGUAGES, LEVEL_INFO } from '@/constants/languages';
 import { palette, radius, shadows, spacing } from '@/constants/theme';
-import { getHomeSummary } from '@/data/mock-progress';
+import { getWords } from '@/data/mock-words';
+import { homeSummary } from '@/lib/stats';
 import { useTheme } from '@/hooks/use-theme';
+import { useProgress } from '@/stores/progress';
 import { useSettings } from '@/stores/settings';
 
 function greeting() {
@@ -39,10 +41,12 @@ export default function HomeScreen() {
   const level = useSettings((s) => s.level);
   const nativeLang = useSettings((s) => s.nativeLang);
   const dailyGoal = useSettings((s) => s.dailyGoal);
+  const byWord = useProgress((s) => s.byWord);
+  const log = useProgress((s) => s.log);
 
   const summary = useMemo(
-    () => getHomeSummary(targetLang, level, dailyGoal),
-    [targetLang, level, dailyGoal],
+    () => homeSummary(getWords(targetLang, level, false), byWord, log, dailyGoal),
+    [targetLang, level, dailyGoal, byWord, log],
   );
   const goalPct = dailyGoal ? Math.min(1, summary.learnedToday / dailyGoal) : 0;
 

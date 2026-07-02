@@ -120,3 +120,8 @@ export function getWords(lang: LangCode, level: CEFRLevel, shuffle = false): Wor
   }
   return copy;
 }
+
+/** All words for a target language (used for per-level progress). */
+export function getLangWords(lang: LangCode): Word[] {
+  return MOCK_WORDS.filter((w) => w.lang === lang);
+}

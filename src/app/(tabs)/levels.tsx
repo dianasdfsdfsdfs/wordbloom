@@ -7,8 +7,10 @@ import { Surface } from '@/components/ui/surface';
 import { Text } from '@/components/ui/text';
 import { LANGUAGES, LEVEL_INFO, TARGET_LANGUAGES } from '@/constants/languages';
 import { radius, shadows, spacing } from '@/constants/theme';
-import { getLevelStats } from '@/data/mock-progress';
+import { getLangWords } from '@/data/mock-words';
+import { levelStats } from '@/lib/stats';
 import { useTheme } from '@/hooks/use-theme';
+import { useProgress } from '@/stores/progress';
 import { useSettings } from '@/stores/settings';
 import type { CEFRLevel, LangCode } from '@/types/domain';
 
@@ -19,7 +21,8 @@ export default function LevelsScreen() {
   const setTargetLang = useSettings((s) => s.setTargetLang);
   const setLevel = useSettings((s) => s.setLevel);
 
-  const stats = useMemo(() => getLevelStats(targetLang, level), [targetLang, level]);
+  const byWord = useProgress((s) => s.byWord);
+  const stats = useMemo(() => levelStats(getLangWords(targetLang), byWord), [targetLang, byWord]);
 
   const selectLang = (l: LangCode) => {
     Haptics.selectionAsync().catch(() => {});
