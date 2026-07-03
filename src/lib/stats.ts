@@ -38,18 +38,15 @@ export function learnedTodayCount(byWord: Record<string, WordProgress>, now = Da
   return count;
 }
 
-function recentWords(log: ReviewEntry[], byWord: Record<string, WordProgress>, limit = 6): Word[] {
-  const seen = new Set<string>();
-  const out: Word[] = [];
-  for (let i = log.length - 1; i >= 0 && out.length < limit; i--) {
-    const e = log[i]!;
-    if (e.result !== 'known' || seen.has(e.wordId)) continue;
-    seen.add(e.wordId);
-    if (byWord[e.wordId]?.status === 'known') continue; // skip already-known words
-    const w = WORD_BY_ID.get(e.wordId);
-    if (w) out.push(w);
-  }
-  return out;
+// Only words the user actually learned: seen more than once and now recalled
+// (status review/mastered). Excludes first-time "known" (already-knew) words.
+function recentWords(byWord: Record<string, WordProgress>, limit = 6): Word[] {
+  return Object.values(byWord)
+    .filter((p) => p.seen > 1 && (p.status === 'review' || p.status === 'mastered'))
+    .sort((a, b) => (b.learnedAt ?? b.lastReviewedAt ?? 0) - (a.learnedAt ?? a.lastReviewedAt ?? 0))
+    .slice(0, limit)
+    .map((p) => WORD_BY_ID.get(p.wordId))
+    .filter((w): w is Word => Boolean(w));
 }
 
 export interface HomeSummary {
@@ -75,7 +72,7 @@ export function homeSummary(
     reviewsDue: due,
     newAvailable: fresh,
     totalLearned: totalMastered(byWord),
-    recent: recentWords(log, byWord),
+    recent: recentWords(byWord),
   };
 }
 

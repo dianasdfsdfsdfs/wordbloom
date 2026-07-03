@@ -9,6 +9,8 @@
 // Run:  node scripts/build-words-de.mjs   (safe to re-run; resumes from cache)
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 
+import { STOP } from './de-stopwords.mjs';
+
 const EMAIL = 'vmsinvest@gmail.com';
 const N_PER_LEVEL = 400; // words per level, taken in frequency order
 const EX_PER_LEVEL = 40;
@@ -20,7 +22,7 @@ const OUT_PATH = new URL('../src/data/words-de.generated.ts', import.meta.url);
 const LEVELS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-const eligible = (w) => /^[a-zäöüß][a-zäöüß'-]{1,23}$/.test(w);
+const eligible = (w) => /^[a-zäöüß][a-zäöüß'-]{2,23}$/.test(w) && !STOP.has(w);
 const slug = (s) =>
   s
     .toLowerCase()
