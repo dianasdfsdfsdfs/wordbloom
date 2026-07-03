@@ -1,4 +1,5 @@
 import type { CEFRLevel, LangCode, Word } from '@/types/domain';
+import { GENERATED_DE } from './words-de.generated';
 import { GENERATED_WORDS } from './words.generated';
 
 /**
@@ -184,12 +185,14 @@ const CURATED_WORDS: Word[] = [
   { id: 'de-c2-vermeintlich', lang: 'de', level: 'C2', headword: 'vermeintlich', pos: 'adjective', translations: { ru: 'мнимый' }, example: 'Ein vermeintlicher Vorteil.', exampleTranslation: 'Мнимое преимущество.' },
 ];
 
-const generatedIds = new Set(GENERATED_WORDS.map((w) => w.id));
+const curatedKeys = new Set(CURATED_WORDS.map((w) => `${w.lang}:${w.headword.toLowerCase()}`));
 
-/** Generated English (CEFR pipeline) + curated words with examples, deduped by id. */
+/** Curated words (articles + examples) first, then the generated CEFR set,
+ *  skipping any generated word a curated one already covers. */
 export const MOCK_WORDS: Word[] = [
-  ...GENERATED_WORDS,
-  ...CURATED_WORDS.filter((w) => !generatedIds.has(w.id)),
+  ...CURATED_WORDS,
+  ...GENERATED_WORDS.filter((w) => !curatedKeys.has(`${w.lang}:${w.headword.toLowerCase()}`)),
+  ...GENERATED_DE.filter((w) => !curatedKeys.has(`${w.lang}:${w.headword.toLowerCase()}`)),
 ];
 
 /** Words for a given collection, optionally shuffled (random, not alphabetical). */

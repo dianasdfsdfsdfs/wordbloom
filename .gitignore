@@ -46,3 +46,6 @@ example
 scripts/translations-cache.json
 
 scripts/examples-cache.json
+
+scripts/de-translations-cache.json
+scripts/de-examples-cache.json
