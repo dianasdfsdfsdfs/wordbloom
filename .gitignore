@@ -49,3 +49,5 @@ scripts/examples-cache.json
 
 scripts/de-translations-cache.json
 scripts/de-examples-cache.json
+
+.vercel

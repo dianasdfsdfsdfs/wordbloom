@@ -12,9 +12,11 @@ import { useFonts } from 'expo-font';
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import { View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { MobileNotice } from '@/components/mobile-notice';
 import { themes } from '@/constants/theme';
 import { useResolvedScheme } from '@/hooks/use-theme';
 import { startCloudSync } from '@/lib/sync';
@@ -66,7 +68,9 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <ThemeProvider value={navTheme}>
-          <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }}>
+          <View style={{ flex: 1 }}>
+            <MobileNotice />
+            <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.bg } }}>
             <Stack.Protected guard={hasOnboarded}>
               <Stack.Screen name="(tabs)" />
               <Stack.Screen name="study" options={{ presentation: 'fullScreenModal', animation: 'fade' }} />
@@ -75,7 +79,8 @@ export default function RootLayout() {
               <Stack.Screen name="(onboarding)" />
               <Stack.Screen name="(auth)" />
             </Stack.Protected>
-          </Stack>
+            </Stack>
+          </View>
         </ThemeProvider>
       </SafeAreaProvider>
     </GestureHandlerRootView>
